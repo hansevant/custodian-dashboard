@@ -22,9 +22,7 @@ if (isset($_GET["approve"])) {
 }
 
 if (isset($_GET["reject"])) {
-    if ($_SESSION['role'] != 'CS') {
-        echo "<script>alert('Forbidden!');location.href='../template.php'</script>";
-    }
+
     $value = $_GET["reject"];
     $user = $_SESSION['name'];
     $comment = "$user telah mereject dokumen ini";

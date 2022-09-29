@@ -56,7 +56,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- ============================================================== -->
             <div class="page-breadcrumb">
                 <div class="row">
-                    <div class="col-7 align-self-center">
+                    <di0v class="col-7 align-self-center">
                         <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name'];; ?>!</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
@@ -67,144 +67,144 @@ if (!isset($_SESSION['id']) > 0) {
                                 </ol>
                             </nav>
                         </div>
-                    </div>
-                    <div class="col-5 align-self-center">
-                        <?php if ($_SESSION['role'] == 'RM') { ?>
-                            <div class="customize-input float-right">
-                                <a href="upload.php" class="btn btn-primary">Upload Dokumen + </a>
-                            </div>
-                        <?php } ?>
-                    </div>
+                </div>
+                <div class="col-5 align-self-center">
+                    <?php if ($_SESSION['role'] == 'RM') { ?>
+                        <div class="customize-input float-right">
+                            <a href="upload.php" class="btn btn-primary">Upload Dokumen + </a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- *************************************************************** -->
-                <!-- Start First Cards -->
-                <!-- *************************************************************** -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- *************************************************************** -->
+            <!-- Start First Cards -->
+            <!-- *************************************************************** -->
 
-                <!-- *************************************************************** -->
-                <!-- End First Cards -->
-                <!-- *************************************************************** -->
-                <!-- *************************************************************** -->
-                <!-- Start Sales Charts Section -->
-                <!-- *************************************************************** -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title float-left">Pending Dokumen</h4>
+            <!-- *************************************************************** -->
+            <!-- End First Cards -->
+            <!-- *************************************************************** -->
+            <!-- *************************************************************** -->
+            <!-- Start Sales Charts Section -->
+            <!-- *************************************************************** -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title float-left">Pending Dokumen</h4>
 
-                                <hr class="mt-5">
-                                <div class="table-responsive">
-                                    <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
-                                                <?php if ($_SESSION['role'] == 'CS') { ?>
-                                                    <th>Aksi</th>
-                                                <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $i = 1;
-
-                                            if ($_SESSION['role'] == 'RM') {
-
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0");
-                                            } else {
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0 AND approver = '$_SESSION[id]'");
-                                            }
-
-                                            $n = 1;
-                                            while ($data = mysqli_fetch_array($sql)) {
-                                                $now = gmdate("Y-m-d", time());
-                                                $remaining = strtotime($data[8]) - time();
-                                                $days_remaining = floor($remaining / 86400);
-                                                $hours_remaining = floor(($remaining % 86400) / 3600);
-                                            ?>
-
-                                                <tr>
-                                                    <td><a href="doc.php?id_dokumen=<?= $data[0] ?>"><?= $data[1]; ?></a></td>
-                                                    <td><?= $data[3]; ?></td>
-                                                    <td><?= $data[4]; ?></td>
-                                                    <td><?= $data[10]; ?></td>
-                                                    <?php if ($_SESSION['role'] == 'CS') { ?>
-                                                        <td>
-                                                            <a href="functions/TL.php?approve=<?= $data[0] ?>" class="btn btn-success">
-                                                                <i class="fas fa-check"></i>
-                                                            </a>
-                                                            <a href="functions/TL.php?reject=<?= $data[0] ?>" class="btn btn-warning">
-                                                                <i class="fas fa-times"></i>
-                                                            </a>
-                                                            <a href="functions/TL.php?cancel=<?= $data[0] ?>" class="btn btn-danger">
-                                                                <i class="fas fa-trash"></i>
-                                                            </a>
-                                                        </td>
-                                                    <?php } ?>
-                                                </tr>
-
+                            <hr class="mt-5">
+                            <div class="table-responsive">
+                                <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Dokumen</th>
+                                            <th>Nasabah</th>
+                                            <th>Jenis Perjanjian</th>
+                                            <th>Status</th>
+                                            <?php if ($_SESSION['role'] == 'CS') { ?>
+                                                <th>Aksi</th>
                                             <?php } ?>
-                                        </tbody>
-                                        <tfoot>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 1;
+
+                                        if ($_SESSION['role'] == 'RM') {
+
+                                            $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0");
+                                        } else {
+                                            $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0 AND approver = '$_SESSION[id]'");
+                                        }
+
+                                        $n = 1;
+                                        while ($data = mysqli_fetch_array($sql)) {
+                                            $now = gmdate("Y-m-d", time());
+                                            $remaining = strtotime($data[8]) - time();
+                                            $days_remaining = floor($remaining / 86400);
+                                            $hours_remaining = floor(($remaining % 86400) / 3600);
+                                        ?>
+
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
+                                                <td><a href="doc.php?id_dokumen=<?= $data[0] ?>"><?= $data[1]; ?></a></td>
+                                                <td><?= $data[3]; ?></td>
+                                                <td><?= $data[4]; ?></td>
+                                                <td><?= $data[10]; ?></td>
                                                 <?php if ($_SESSION['role'] == 'CS') { ?>
-                                                    <th>Aksi</th>
+                                                    <td>
+                                                        <a href="functions/TL.php?approve=<?= $data[0] ?>" class="btn btn-success">
+                                                            <i class="fas fa-check"></i>
+                                                        </a>
+                                                        <a href="functions/TL.php?reject=<?= $data[0] ?>" class="btn btn-warning">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                        <a href="functions/TL.php?cancel=<?= $data[0] ?>" class="btn btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    </td>
                                                 <?php } ?>
                                             </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+
+                                        <?php } ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Dokumen</th>
+                                            <th>Nasabah</th>
+                                            <th>Jenis Perjanjian</th>
+                                            <th>Status</th>
+                                            <?php if ($_SESSION['role'] == 'CS') { ?>
+                                                <th>Aksi</th>
+                                            <?php } ?>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- *************************************************************** -->
-                <!-- End Sales Charts Section -->
-                <!-- *************************************************************** -->
-                <!-- *************************************************************** -->
-                <!-- Start Location and Earnings Charts Section -->
-                <!-- *************************************************************** -->
-
-                <!-- *************************************************************** -->
-                <!-- End Location and Earnings Charts Section -->
-                <!-- *************************************************************** -->
-                <!-- *************************************************************** -->
-                <!-- Start Top Leader Table -->
-
-                <!-- *************************************************************** -->
-                <!-- End Top Leader Table -->
-                <!-- *************************************************************** -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
+            <!-- *************************************************************** -->
+            <!-- End Sales Charts Section -->
+            <!-- *************************************************************** -->
+            <!-- *************************************************************** -->
+            <!-- Start Location and Earnings Charts Section -->
+            <!-- *************************************************************** -->
+
+            <!-- *************************************************************** -->
+            <!-- End Location and Earnings Charts Section -->
+            <!-- *************************************************************** -->
+            <!-- *************************************************************** -->
+            <!-- Start Top Leader Table -->
+
+            <!-- *************************************************************** -->
+            <!-- End Top Leader Table -->
+            <!-- *************************************************************** -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Container fluid  -->
         <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center text-muted">
+            All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
