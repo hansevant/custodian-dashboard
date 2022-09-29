@@ -98,7 +98,7 @@ if (!isset($_SESSION['id']) > 0) {
                                         <input type="password" class="form-control" placeholder="" name="newpassword2" required>
                                     </div>
                                     <div class="form-actions">
-                                        <button type="submit" class="btn btn-info" name="">Submit</button>
+                                        <button type="submit" class="btn btn-info" name="submit_cp">Submit</button>
                                         <button type="reset" class="btn btn-dark">Reset</button>
                                     </div>
                                 </form>

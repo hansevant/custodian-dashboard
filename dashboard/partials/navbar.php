@@ -59,9 +59,9 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-
+                <p class="mr-5">Hello <?= $_SESSION['name']; ?></p>
                 <!-- Notification -->
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mr-lg-4 pl-md-3 position-relative" href="javascript:void(0)" id="bell" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span><i data-feather="bell" class="svg-icon"></i></span>
                         <span class="badge badge-primary notify-no rounded-circle">5</span>
@@ -70,7 +70,7 @@
                         <ul class="list-style-none">
                             <li>
                                 <div class="message-center notifications position-relative">
-                                    <!-- Message -->
+                                 
                                     <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <div class="btn btn-danger rounded-circle btn-circle"><i data-feather="airplay" class="text-white"></i></div>
                                         <div class="w-75 d-inline-block v-middle pl-2">
@@ -81,7 +81,7 @@
                                             <span class="font-12 text-nowrap d-block text-muted">9:30 AM</span>
                                         </div>
                                     </a>
-                                    <!-- Message -->
+                                 
                                     <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-success text-white rounded-circle btn-circle"><i data-feather="calendar" class="text-white"></i></span>
                                         <div class="w-75 d-inline-block v-middle pl-2">
@@ -91,7 +91,7 @@
                                             <span class="font-12 text-nowrap d-block text-muted">9:10 AM</span>
                                         </div>
                                     </a>
-                                    <!-- Message -->
+                                 
                                     <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-info rounded-circle btn-circle"><i data-feather="settings" class="text-white"></i></span>
                                         <div class="w-75 d-inline-block v-middle pl-2">
@@ -102,7 +102,7 @@
                                             <span class="font-12 text-nowrap d-block text-muted">9:08 AM</span>
                                         </div>
                                     </a>
-                                    <!-- Message -->
+                                 
                                     <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                         <span class="btn btn-primary rounded-circle btn-circle"><i data-feather="box" class="text-white"></i></span>
                                         <div class="w-75 d-inline-block v-middle pl-2">
@@ -121,7 +121,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> -->
                 <!-- End Notification -->
                 <!-- ============================================================== -->
                 <!-- <li class="nav-item d-none d-md-block">

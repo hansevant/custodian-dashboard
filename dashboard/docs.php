@@ -57,7 +57,7 @@ if (!isset($_SESSION['id']) > 0) {
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name'];; ?>!</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name']; ?>!</h3>
                         <div class="d-flex align-items-center">
                         </div>
                     </div>

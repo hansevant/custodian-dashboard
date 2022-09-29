@@ -2,7 +2,7 @@
 
 include '../../function.php';
 session_start();
-if ($_GET['id']) {
+if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     $sql = mysqli_query($conn, "UPDATE users SET `password` = PASSWORD('custodian2023'), reset_pass = 1 WHERE id = '$id'");
@@ -13,29 +13,35 @@ location.href='../accounts.php'
 </script>";
 }
 
-if ($_POST['submit_cp']) {
+if (isset($_POST['submit_cp'])) {
 
-    $oldpass    =  mysqli_real_escape_string($con, $_POST['oldpassword']);
-    $newpass    =  mysqli_real_escape_string($con, $_POST['newpassword']);
-    $cpass    =  mysqli_real_escape_string($con, $_POST['newpassword2']);
+    $oldpass    =  mysqli_real_escape_string($conn, $_POST['oldpassword']);
+    $newpass    =  mysqli_real_escape_string($conn, $_POST['newpassword']);
+    $cpass    =  mysqli_real_escape_string($conn, $_POST['newpassword2']);
 
-    $rpass = mysqli_query($conn, "SELECT `password` FROM users where id = '$id'");
+    $rpass = mysqli_fetch_row(mysqli_query($conn, "SELECT `password` FROM users where id = '$_SESSION[id]'"));
 
-    if ($newpass == $cpass) {
+    if (md5($oldpass) == $rpass[0]) {
+        if ($newpass == $cpass) {
 
-        $query = mysqli_query($con, "UPDATE acc_user 
-                                SET `password` = PASSWORD('$newpass'),
+            $pass = md5($newpass);
+            $query = mysqli_query($conn, "UPDATE users 
+                                SET `password` = '$pass',
                                     reset_pass = 0
-                                WHERE id_user = '$_SESSION[id]' ");
-        if ($query) {
-            echo "<script>alert('Password berhasil diubah'); 
-                                            location.href='../leader/index.php' </script>";
+                                WHERE id = '$_SESSION[id]' ");
+            if ($query) {
+                echo "<script>alert('Password berhasil diubah'); 
+                                            location.href='../account.php' </script>";
+            } else {
+                echo "<script>alert('Password gagal diubah'); 
+                                            location.href='../account.php' </script>";
+            }
         } else {
-            echo "<script>alert('Password gagal diubah'); 
-                                            location.href='../leader/changepass.php' </script>";
+            echo "<script>alert('Password tidak sama mohon ulangi'); 
+                    location.href='../account.php' </script>";
         }
     } else {
-        echo "<script>alert('Password tidak sama mohon ulangi'); 
+        echo "<script>alert('Password salah mohon masukan password lama yang benar'); 
                     location.href='../account.php' </script>";
     }
 }

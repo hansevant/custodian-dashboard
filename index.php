@@ -12,7 +12,7 @@ $conn = mysqli_connect($server, $username, $pw, $db);
 error_reporting(0);
 if ($_SESSION['id']) {
     echo "<script>
-    location.href = 'dashboard/template.php';
+    location.href = 'dashboard/';
   </script>";
 }
 
@@ -67,7 +67,7 @@ if (isset($_POST["login"])) {
         <h1>Please Login</h1>
         <form action="" method="post">
             <div class="txt_field">
-                <input type="text" name="username" id="uname" required>
+                <input type="text" name="username" id="uname" autofocus required>
                 <span></span>
                 <label for="uname">Username</label>
             </div>

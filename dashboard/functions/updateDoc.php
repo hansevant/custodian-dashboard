@@ -76,7 +76,7 @@ if ($_FILES['dokumen']['error'] === 4) {
                 ");
 
         echo "<script>alert('Berhasil 2....!!!');
-        location.href='../../o';</script>";
+        location.href='../docs.php';</script>";
     } else {
         echo "<script>alert('Maaf format file hanya bisa PDF');
         location.href='../upload.php';</script>";
@@ -111,7 +111,7 @@ if ($_FILES['dokumen']['error'] === 4) {
                 ");
 
         echo "<script>alert('Berhasil 1....!!!');
-        location.href='../../o';</script>";
+        location.href='../docs.php';</script>";
     } else {
         // echo "<script>alert('Maaf format file hanya bisa PDF');
         // location.href='../upload.php';</script>";

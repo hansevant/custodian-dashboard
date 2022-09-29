@@ -24,7 +24,7 @@ if ($select_id == FALSE) {
 
 echo $id_doc;
 
-echo md5('123');
+echo "<br>" . md5(123);
 // $now = '2022-09-02';
 $deadline = '2022-10-03';
 // $date = new DateTime($now);
