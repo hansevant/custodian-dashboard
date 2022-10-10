@@ -15,6 +15,78 @@ if (!isset($_SESSION['id']) > 0) {
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <?php include "partials/head.php"; ?>
     <title>Dokumen</title>
+    <style>
+        ul.ks-cboxtags {
+            list-style: none;
+            padding: 20px;
+        }
+
+        ul.ks-cboxtags li {
+            display: inline;
+        }
+
+        ul.ks-cboxtags li label {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, .9);
+            border: 2px solid rgba(139, 139, 139, .3);
+            color: #adadad;
+            border-radius: 25px;
+            white-space: nowrap;
+            margin: 3px 0px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: all .2s;
+        }
+
+        ul.ks-cboxtags li label {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        ul.ks-cboxtags li label::before {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            font-size: 12px;
+            padding: 2px 6px 2px 2px;
+            content: "\f067";
+            transition: transform .3s ease-in-out;
+        }
+
+        ul.ks-cboxtags li input[type="checkbox"]:checked+label::before {
+            content: "\f00c";
+            transform: rotate(-360deg);
+            transition: transform .3s ease-in-out;
+        }
+
+        ul.ks-cboxtags li input[type="checkbox"]:checked+label {
+            border: 2px solid #1bdbf8;
+            background-color: #12bbd4;
+            color: #fff;
+            transition: all .2s;
+        }
+
+        ul.ks-cboxtags li input[type="checkbox"] {
+            display: absolute;
+        }
+
+        ul.ks-cboxtags li input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        ul.ks-cboxtags li input[type="checkbox"]:focus+label {
+            border: 2px solid #e9a1ff;
+        }
+    </style>
 </head>
 
 <body>
@@ -91,16 +163,85 @@ if (!isset($_SESSION['id']) > 0) {
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title float-left">Data Dokumen</h4>
+                                <h4 class="card-title float-left">Custodian Documents</h4>
+
+                                <!-- Modal Filter -->
 
                                 <div class="btn-group float-right">
-                                    <button type="button" class="btn btn-outline-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Filter By
-                                    </button>
-                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                    </div>
+                                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#right-modal">Filter</button>
+                                </div>
+
+                                <div id="right-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm justify-content-start modal-right">
+                                        <div class="modal-content pr-4 border-0">
+                                            <div class="modal-header border-0">
+                                                <h4 class="modal-title" id="myLargeModalLabel">Filter</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="">
+                                                    <p>Filter By Agreement Date</p>
+                                                    <div class="form-group">
+                                                        <input type="date" class="form-control">
+                                                        <small id="textHelp" class="form-text text-muted">From</small>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="date" class="form-control">
+                                                        <small id="textHelp" class="form-text text-muted">To</small>
+                                                    </div>
+                                                    <hr>
+                                                    <p>Filter By Type of Agreement</p>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                        <label class="custom-control-label" for="customCheck1">Ops memo</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                        <label class="custom-control-label" for="customCheck2">Reksadana</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck3">
+                                                        <label class="custom-control-label" for="customCheck3">Safekeeping</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck4">
+                                                        <label class="custom-control-label" for="customCheck4">Selling Agentu</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                                        <label class="custom-control-label" for="customCheck5">EBA (Efek Beragun Aset)</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                                        <label class="custom-control-label" for="customCheck6">SLA (Service Level Agreement)</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                                        <label class="custom-control-label" for="customCheck7">KPD (Kontrak Pengelolaan Dana)</label>
+                                                    </div>
+                                                    <hr>
+                                                    <p>Filter By Status</p>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck11">
+                                                        <label class="custom-control-label" for="customCheck11">Berlaku</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck12">
+                                                        <label class="custom-control-label" for="customCheck12">Tidak Berlaku</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="customCheck13">
+                                                        <label class="custom-control-label" for="customCheck13">Masa Review</label>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-info">Submit</button>
+                                                        <button type="reset" class="btn btn-dark">Reset</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
                                 </div>
 
                                 <hr class="mt-5">
