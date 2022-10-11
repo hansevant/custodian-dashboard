@@ -43,14 +43,14 @@
             <ul class="navbar-nav float-left mr-auto ml-3 pl-1">
                 <!-- create new -->
                 <!-- ============================================================== -->
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i data-feather="settings" class="svg-icon"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Reset Password</a>
                     </div>
-                </li>
+                </li> -->
             </ul>
             <!-- ============================================================== -->
             <!-- Right side toggle and nav items -->
@@ -59,7 +59,7 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-                <p class="mr-5">Hello <?= $_SESSION['name']; ?></p>
+                <p class="mr-5 mt-4"><?= gmdate("l, jS F Y ", time()); ?></p>
                 <!-- Notification -->
                 <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mr-lg-4 pl-md-3 position-relative" href="javascript:void(0)" id="bell" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

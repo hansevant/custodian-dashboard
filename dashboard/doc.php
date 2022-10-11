@@ -82,8 +82,7 @@ if (!isset($_SESSION['id']) > 0) {
                 $hours_remaining = floor(($remaining % 86400) / 3600);
                 ?>
 
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary" onclick="location.href='docs.php'">
-                    <i class="icon-action-undo"></i> Kembali</button>
+                <a download href="docs/<?= $doc[2]; ?>" class="btn waves-effect waves-light btn-rounded btn-primary"><i class="fas fa-download"></i> Download</a>
                 <?php
                 if ($_SESSION['role'] == 'RM' && $doc[12] != 0) {
                 ?>
@@ -145,7 +144,7 @@ if (!isset($_SESSION['id']) > 0) {
                                         <?php
                                         }
                                         ?>
-                                        <?php if ($_SESSION['role'] != 'op') {
+                                        <?php if ($_SESSION['role'] != 'op' && $_SESSION['role'] != 'admin') {
                                         ?>
                                             <form class="mt-3" action="functions/comment.php" method="POST">
                                                 <div class="form-group">
@@ -333,7 +332,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

@@ -23,15 +23,15 @@ if ($select_id == FALSE) {
 }
 
 echo $id_doc;
-
+date_default_timezone_set("Asia/Bangkok");
 echo "<br>" . md5(123);
 // $now = '2022-09-02';
 $deadline = '2022-10-03';
 // $date = new DateTime($now);
 // $timestamp = $date->getTimestamp();
-$now = gmdate("Y-m-d", time());
+$now = gmdate("l jS F Y ", time());
 $batas = date("Y-m-d", strtotime($deadline . '-1 month'));
-// echo $now . '</br>';
+echo  '</br>' . $now . '</br>';
 // echo $deadline . '</br>';
 // echo $batas  . '</br>';
 $remaining = strtotime($deadline) - time();
@@ -66,8 +66,42 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
 <body>
     <a href="index.php?filter=berlaku">s b</a>
     <a href="index.php">reset</a>
-    <hr>
+    <form method="POST">
+        <table>
+            <tr>
+                <td width="60px" valign="top">Status</td>
+                <td valign="top">
+                    <label><input type="checkbox" name="hobi[]" value="'Berlaku'">Berlaku</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Tidak Berlaku'">Tidak Berlaku</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Masa Review'">MR</label><br>
+                </td>
+            </tr>
+            <tr>
+                <td width="60px" valign="top">Jenis</td>
+                <td valign="top">
+                    <label><input type="checkbox" name="hoby[]" value="'Selling Agent'">Selling Agent</label><br>
+                    <label><input type="checkbox" name="hoby[]" value="'Reksadana'">Reksadana</label><br>
+                    <label><input type="checkbox" name="hoby[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
+                    <label><input type="checkbox" name="hoby[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br>
+                </td>
+            </tr>
+            <tr>
+                <td width="60px" valign="top">Tanggal</td>
+                <td valign="top">
+                    <label><input type="date" name="firstdate"> Awal</label><br>
+                    <label><input type="date" name="lastdate"> Akhir</label><br>
+                </td>
+            </tr>
+            <tr>
+                <td width="60px" valign="top"></td>
+                <td valign="top">
+                    <input type="submit" name="simpan" value="Simpan">
+                </td>
+            </tr>
+        </table>
+    </form>
     <table style="width:60%">
+        <hr>
 
         <tr>
             <th>#</th>
@@ -84,15 +118,43 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
             <th>status</th>
         </tr>
 
+
+        <?php
+        if (isset($_POST['simpan'])) {
+            // foreach ($_POST['hobi'] as $value) {
+            //     echo $value . ',';
+            // }
+            $and = 'is_approved = 1';
+            if (!empty($_POST['hobi'])) {
+                $filter = implode(",", $_POST['hobi']);
+                $and .= " AND `status` IN ($filter)";
+            }
+            if (!empty($_POST['hoby'])) {
+                $filter2 = implode(",", $_POST['hoby']);
+                $and .= " AND jenis_perjanjian IN ($filter2)";
+            }
+            if (!empty($_POST['firstdate']) && !empty($_POST['lastdate'])) {
+                $fd = $_POST['firstdate'];
+                $ld = $_POST['lastdate'];
+                // echo $_POST['lastdate'];
+                // echo $_POST['firstdate'];
+                $and .= " AND tanggal_perjanjian BETWEEN '$fd' AND '$ld'";
+            }
+            $data = mysqli_query($conn, "SELECT * FROM docs WHERE " . $and);
+        } else {
+            $data = mysqli_query($conn, "SELECT * FROM docs WHERE is_approved = 1");
+        }
+        ?>
+
         <?php
 
         // ambil data dan penomoran
-        if (isset($_GET["filter"])) {
-            $value = $_GET['filter'];
-            $data = mysqli_query($conn, "SELECT * FROM docs WHERE `status` =  '$value'");
-        } else {
-            $data = mysqli_query($conn, "SELECT * FROM docs");
-        }
+        // if (isset($_GET["filter"])) {
+        //     $value = $_GET['filter'];
+        //     $data = mysqli_query($conn, "SELECT * FROM docs WHERE `status` =  '$value'");
+        // } else {
+        //     $data = mysqli_query($conn, "SELECT * FROM docs");
+        // }
         $n = 1;
 
         while ($row = mysqli_fetch_array($data)) {
@@ -136,6 +198,57 @@ $hours_remaining = floor(($remaining % 86400) / 3600);
             $n++;
         } ?>
     </table>
+
+    <form action="" method="post">
+        <select name="main_cat" id="main_cat">
+            <option value="null" disabled selected>Select Category</option>
+
+        </select>
+        </br>
+        <select name="sub_cat" id="sub-category-dropdown">
+            <option value="">Select SubCategory</option>
+        </select>
+        </br>
+        <input type="text" name="ad_brand" Placeholder="Brand(Cat,Jcb,Doosan)">
+        </br>
+        <label for="for_r_S">Price</label>
+        <div class="range_sliders">
+            <input type="text" name="min_range" Placeholder="Min">
+            <span> - </span>
+            <input type="text" name="max_range" Placeholder="Max">
+        </div>
+        </br>
+        <label for="for_r_S">For Rent</label>
+        <input type="radio" name="for_r_s" id="for_r_s" value="1">
+        <label for="for_r_S">For Sale</label>
+        <input type="radio" name="for_r_s" id="for_r_s" value="2">
+        </br>
+        <div id="content"></div>
+        <button type="submit" name="filter_button" class="filter_button">Search</button>
+    </form>
+
+    <form method="POST">
+        <table>
+            <tr>
+                <td width="60px" valign="top">Hobi</td>
+                <td valign="top">
+                    <label><input type="checkbox" name="hobi[]" value="'Nonton'">Nonton</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Menulis'">Menulis</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Traveling'">Traveling</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Otomotif'">Otomotif</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Fotografi">Fotografi</label><br>
+                    <label><input type="checkbox" name="hobi[]" value="'Programming'">Programming</label>
+                </td>
+            </tr>
+            <tr>
+                <td width="60px" valign="top"></td>
+                <td valign="top">
+                    <input type="submit" name="simpan" value="Simpan">
+                </td>
+            </tr>
+        </table>
+    </form>
+
 </body>
 
 </html>

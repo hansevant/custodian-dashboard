@@ -57,16 +57,7 @@ if (!isset($_SESSION['id']) > 0) {
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name'];; ?>!</h3>
-                        <div class="d-flex align-items-center">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb m-0 p-0">
-                                    <li class="breadcrumb-item">
-                                        <a href="../logout.php">keluar</a>
-                                    </li>
-                                </ol>
-                            </nav>
-                        </div>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello <?= $_SESSION['name'];; ?>!</h3>
                     </div>
                     <div class="col-5 align-self-center">
                         <?php if ($_SESSION['role'] == 'RM') { ?>
@@ -196,7 +187,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

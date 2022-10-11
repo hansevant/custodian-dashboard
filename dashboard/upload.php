@@ -215,7 +215,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

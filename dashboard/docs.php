@@ -15,78 +15,6 @@ if (!isset($_SESSION['id']) > 0) {
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <?php include "partials/head.php"; ?>
     <title>Dokumen</title>
-    <style>
-        ul.ks-cboxtags {
-            list-style: none;
-            padding: 20px;
-        }
-
-        ul.ks-cboxtags li {
-            display: inline;
-        }
-
-        ul.ks-cboxtags li label {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, .9);
-            border: 2px solid rgba(139, 139, 139, .3);
-            color: #adadad;
-            border-radius: 25px;
-            white-space: nowrap;
-            margin: 3px 0px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            transition: all .2s;
-        }
-
-        ul.ks-cboxtags li label {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
-        ul.ks-cboxtags li label::before {
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            font-size: 12px;
-            padding: 2px 6px 2px 2px;
-            content: "\f067";
-            transition: transform .3s ease-in-out;
-        }
-
-        ul.ks-cboxtags li input[type="checkbox"]:checked+label::before {
-            content: "\f00c";
-            transform: rotate(-360deg);
-            transition: transform .3s ease-in-out;
-        }
-
-        ul.ks-cboxtags li input[type="checkbox"]:checked+label {
-            border: 2px solid #1bdbf8;
-            background-color: #12bbd4;
-            color: #fff;
-            transition: all .2s;
-        }
-
-        ul.ks-cboxtags li input[type="checkbox"] {
-            display: absolute;
-        }
-
-        ul.ks-cboxtags li input[type="checkbox"] {
-            position: absolute;
-            opacity: 0;
-        }
-
-        ul.ks-cboxtags li input[type="checkbox"]:focus+label {
-            border: 2px solid #e9a1ff;
-        }
-    </style>
 </head>
 
 <body>
@@ -129,7 +57,7 @@ if (!isset($_SESSION['id']) > 0) {
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name']; ?>!</h3>
+                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello <?= $_SESSION['name']; ?>!</h3>
                         <div class="d-flex align-items-center">
                         </div>
                     </div>
@@ -168,78 +96,106 @@ if (!isset($_SESSION['id']) > 0) {
                                 <!-- Modal Filter -->
 
                                 <div class="btn-group float-right">
-                                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#right-modal">Filter</button>
+                                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#top-modal"><i class="fa fa-filter"></i> Filters</button>
+                                    <a href="?" class="btn btn-outline-secondary"><i class="fas fa-undo"></i> Reset</a>
                                 </div>
 
-                                <div id="right-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm justify-content-start modal-right">
-                                        <div class="modal-content pr-4 border-0">
-                                            <div class="modal-header border-0">
-                                                <h4 class="modal-title" id="myLargeModalLabel">Filter</h4>
+                                <div id="top-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog modal-top">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="topModalLabel"><strong>Filters</strong></h4>
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="">
-                                                    <p>Filter By Agreement Date</p>
-                                                    <div class="form-group">
-                                                        <input type="date" class="form-control">
-                                                        <small id="textHelp" class="form-text text-muted">From</small>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="date" class="form-control">
-                                                        <small id="textHelp" class="form-text text-muted">To</small>
-                                                    </div>
+                                                <form method="POST" action="">
+                                                    <table style="width:100%;">
+                                                        <tr>
+                                                            <td width="70px" valign="top">Jenis</td>
+                                                            <td valign="top">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Ops memo'" id="customCheck1">
+                                                                    <label class="custom-control-label" for="customCheck1">Ops memo</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Reksadana'" id="customCheck2">
+                                                                    <label class="custom-control-label" for="customCheck2">Reksadana</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Safekeeping'" id="customCheck3">
+                                                                    <label class="custom-control-label" for="customCheck3">Safekeeping</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Selling Agent'" id="customCheck4">
+                                                                    <label class="custom-control-label" for="customCheck4">Selling Agent</label>
+                                                                </div>
+                                                                <!-- <label><input type="checkbox" name="type[]" value="'Selling Agent'">Selling Agent</label><br>
+                                                                <label><input type="checkbox" name="type[]" value="'Reksadana'">Reksadana</label><br> -->
+                                                                <!-- <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
+                                                                <label><input type="checkbox" name="type[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br> -->
+                                                            </td>
+                                                            <td valign="top">
+                                                                <!-- <label><input type="checkbox" name="type[]" value="'Selling Agent'">Selling Agent</label><br>
+                                                                <label><input type="checkbox" name="type[]" value="'Reksadana'">Reksadana</label><br>
+                                                                <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
+                                                                <label><input type="checkbox" name="type[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br> -->
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'>EBA (Efek Beragun Aset)'" id="customCheck5">
+                                                                    <label class="custom-control-label" for="customCheck5">EBA (Efek Beragun Aset)</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'SLA (Service Level Agreement)'" id="customCheck6">
+                                                                    <label class="custom-control-label" for="customCheck6">SLA (Service Level Agreement)</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'" id="customCheck7">
+                                                                    <label class="custom-control-label" for="customCheck7">KPD (Kontrak Pengelolaan Dana)</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                     <hr>
-                                                    <p>Filter By Type of Agreement</p>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                        <label class="custom-control-label" for="customCheck1">Ops memo</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                                        <label class="custom-control-label" for="customCheck2">Reksadana</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                                        <label class="custom-control-label" for="customCheck3">Safekeeping</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                                        <label class="custom-control-label" for="customCheck4">Selling Agentu</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                                        <label class="custom-control-label" for="customCheck5">EBA (Efek Beragun Aset)</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                        <label class="custom-control-label" for="customCheck6">SLA (Service Level Agreement)</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck7">
-                                                        <label class="custom-control-label" for="customCheck7">KPD (Kontrak Pengelolaan Dana)</label>
-                                                    </div>
+                                                    <table style="width:100%;">
+                                                        <tr>
+                                                            <td width="70px" valign="top">Status</td>
+                                                            <td valign="top">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="status[]" value="'Berlaku'" id="customCheck11">
+                                                                    <label class="custom-control-label" for="customCheck11">Berlaku</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="status[]" value="'Tidak Berlaku'" id="customCheck12">
+                                                                    <label class="custom-control-label" for="customCheck12">Tidak Berlaku</label>
+                                                                </div>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="status[]" value="'Masa Review'" id="customCheck13">
+                                                                    <label class="custom-control-label" for="customCheck13">Masa Review</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                     <hr>
-                                                    <p>Filter By Status</p>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                                        <label class="custom-control-label" for="customCheck11">Berlaku</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck12">
-                                                        <label class="custom-control-label" for="customCheck12">Tidak Berlaku</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck13">
-                                                        <label class="custom-control-label" for="customCheck13">Masa Review</label>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="form-actions">
-                                                        <button type="submit" class="btn btn-info">Submit</button>
-                                                        <button type="reset" class="btn btn-dark">Reset</button>
-                                                    </div>
-                                                </form>
+                                                    <table style="width:100%;">
+                                                        <tr>
+                                                            <td width="70px" valign="top">Tanggal</td>
+                                                            <td>
+                                                                <input type="date" class="w-100" name="firstdate">
+                                                                <small id="name1" class="badge badge-default badge-secondary form-text text-white float-left">Start Date</small>
+                                                                <!-- <label><input type="date" name="lastdate"> Akhir</label><br> -->
+                                                            </td>
+                                                            <td>
+                                                                <!-- <label><input type="date" name="firstdate"> Awal</label><br> -->
+                                                                <input type="date" class="w-100" name="lastdate">
+                                                                <small id="name1" class="badge badge-default badge-secondary form-text text-white float-left">End Date</small>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                             </div>
+                                            <div class="modal-footer">
+                                                <button type="reset" class="btn btn-light">Reset</button>
+                                                <button type="submit" name="simpan" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                            </form>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div>
@@ -260,14 +216,31 @@ if (!isset($_SESSION['id']) > 0) {
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             <?php
-                                            $i = 1;
-
-                                            if (!$i) {
-
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where `status` = 'berlaku'");
+                                            if (isset($_POST['simpan'])) {
+                                                // foreach ($_POST['hobi'] as $value) {
+                                                //     echo $value . ',';
+                                                // }
+                                                $and = 'is_approved = 1';
+                                                if (!empty($_POST['status'])) {
+                                                    $filter = implode(",", $_POST['status']);
+                                                    $and .= " AND `status` IN ($filter)";
+                                                }
+                                                if (!empty($_POST['type'])) {
+                                                    $filter2 = implode(",", $_POST['type']);
+                                                    $and .= " AND jenis_perjanjian IN ($filter2)";
+                                                }
+                                                if (!empty($_POST['firstdate']) && !empty($_POST['lastdate'])) {
+                                                    $fd = $_POST['firstdate'];
+                                                    $ld = $_POST['lastdate'];
+                                                    // echo $_POST['lastdate'];
+                                                    // echo $_POST['firstdate'];
+                                                    $and .= " AND tanggal_perjanjian BETWEEN '$fd' AND '$ld'";
+                                                }
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE " . $and);
                                             } else {
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 1");
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE is_approved = 1");
                                             }
 
                                             $n = 1;
@@ -341,7 +314,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

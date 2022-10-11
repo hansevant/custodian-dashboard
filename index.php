@@ -64,6 +64,7 @@ if (isset($_POST["login"])) {
 
 <body>
     <div class="center">
+        <img src="logo.png" alt="">
         <h1>Please Login</h1>
         <form action="" method="post">
             <div class="txt_field">

@@ -107,7 +107,7 @@ if (!isset($_SESSION['id']) > 0) {
                                     <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Total Documents</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
-                                    <span class="opacity-7 text-success"><i data-feather="user-plus"></i></span>
+                                    <span class="opacity-7 text-info"><i data-feather="file-text"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@ if (!isset($_SESSION['id']) > 0) {
                                     <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Approved Documents</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
-                                    <span class="opacity-7 text-danger"><i data-feather="dollar-sign"></i></span>
+                                    <span class="opacity-7 text-success"><i data-feather="check-circle"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +136,7 @@ if (!isset($_SESSION['id']) > 0) {
                                     <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Rejected Documents</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
-                                    <span class="opacity-7 text-warning"><i data-feather="file-plus"></i></span>
+                                    <span class="opacity-7 text-warning"><i data-feather="alert-triangle"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ if (!isset($_SESSION['id']) > 0) {
                                     <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Canceled Documents</h6>
                                 </div>
                                 <div class="ml-auto mt-md-3 mt-lg-0">
-                                    <span class="opacity-7 text-info"><i data-feather="globe"></i></span>
+                                    <span class="opacity-7 text-danger"><i data-feather="trash-2"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ if (!isset($_SESSION['id']) > 0) {
                 <!-- Start Sales Charts Section -->
                 <!-- *************************************************************** -->
                 <div class="row">
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Documents By Status</h4>
@@ -189,7 +189,7 @@ if (!isset($_SESSION['id']) > 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Net Income</h4>
@@ -200,7 +200,7 @@ if (!isset($_SESSION['id']) > 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Documents by Type</h4>
@@ -236,7 +236,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

@@ -48,9 +48,12 @@
                             </li>
                         </ul>
                     </li>
+                <?php }
+                if ($_SESSION['role'] == 'admin') {
+                ?>
+                    <li class="sidebar-item <?= ($active == 'a') ? 'selected' : ''; ?>"> <a class="sidebar-link" href="accounts.php" aria-expanded="false"><i data-feather="users" class="feather-icon"></i><span class="hide-menu">Accounts</span></a></li>
                 <?php } ?>
-                <li class="sidebar-item <?= ($active == 'a') ? 'selected' : ''; ?>"> <a class="sidebar-link" href="accounts.php" aria-expanded="false"><i data-feather="users" class="feather-icon"></i><span class="hide-menu">Accounts</span></a></li>
-                <li class="sidebar-item <?= ($active == 'b') ? 'selected' : ''; ?>"> <a class="sidebar-link" href="account.php" aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span class="hide-menu">Account</span></a></li>
+                <li class="sidebar-item <?= ($active == 'b') ? 'selected' : ''; ?>"> <a class="sidebar-link" href="account.php" aria-expanded="false"><i data-feather="settings" class="feather-icon"></i><span class="hide-menu">Account</span></a></li>
                 <li class="list-divider"></li>
 
                 <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="../logout.php" aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span class="hide-menu">Logout</span></a></li>

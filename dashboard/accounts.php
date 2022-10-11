@@ -5,6 +5,9 @@ header("X-XSS-Protection: 1; mode=block");
 if (!isset($_SESSION['id']) > 0) {
     echo "<script>location.href='../'</script>";
 }
+if ($_SESSION['role'] != 'admin') {
+    echo "<script>location.href='index.php'</script>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -96,12 +99,9 @@ if (!isset($_SESSION['id']) > 0) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $i = 1;
 
-                                            $sql = mysqli_query($conn, "SELECT * FROM users");
+                                            $sql = mysqli_query($conn, "SELECT * FROM users WHERE `role` <> 'admin'");
 
-
-                                            $n = 1;
                                             while ($data = mysqli_fetch_array($sql)) {
                                             ?>
 
@@ -154,7 +154,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center text-muted">
-                All Rights Reserved by Custodian. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+                All Rights Reserved by Bank Rakyat Indonesia. Designed and Developed by <a href="#">Custodian</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
