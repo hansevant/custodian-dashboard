@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -11,9 +11,7 @@ if (!isset($_SESSION['id']) > 0) {
 <html lang="en">
 
 <head>
-    <!-- This page plugin datatables CSS -->
-    <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Account Management</title>
 </head>
 
@@ -35,7 +33,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -43,7 +41,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'a' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -72,7 +70,7 @@ if (!isset($_SESSION['id']) > 0) {
                 <!-- Start Sales Charts Section -->
                 <!-- *************************************************************** -->
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Add User</h4>
@@ -91,7 +89,7 @@ if (!isset($_SESSION['id']) > 0) {
                                         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="role" required>
                                             <option disabled selected value>Choose...</option>
                                             <option value="Maker">Maker</option>
-                                            <option value="Checker/Signer">Checker/Signer</option>
+                                            <option value="Approver">Approver</option>
                                             <option value="Compliance">Compliance</option>
                                             <option value="Operation">Operation</option>
                                         </select>
@@ -146,8 +144,7 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
 
     <!-- Data Table -->
-    <?php include "partials/script.php" ?>
-    <!-- <script src="../src/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
+    <?php include "../partials/script.php" ?>
 </body>
 
 </html>

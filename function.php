@@ -25,9 +25,9 @@ while ($data = mysqli_fetch_row($sql)) {
     //     // if ($datenow > $data[8]) {
     //     // echo 'status : ' . "tidak berlaku" . '<br>';
     //     // } else if ($datenow >= $data[9]) {
-    $query = mysqli_query($conn, "UPDATE docs set `status` = 'berlaku' where tanggal_perjanjian <= '$datenow' && batas_review > '$datenow'");
-    $query = mysqli_query($conn, "UPDATE docs set `status` = 'masa review' where batas_review <= '$datenow' && tanggal_berakhir >= '$datenow'");
-    $query = mysqli_query($conn, "UPDATE docs set `status` = 'tidak berlaku' where tanggal_berakhir <= '$datenow' || tanggal_perjanjian > '$datenow'");
+    $query = mysqli_query($conn, "UPDATE docs set `status` = 'Berlaku' where tanggal_perjanjian <= '$datenow' && batas_review > '$datenow'");
+    $query = mysqli_query($conn, "UPDATE docs set `status` = 'Masa Review' where batas_review <= '$datenow' && tanggal_berakhir >= '$datenow'");
+    $query = mysqli_query($conn, "UPDATE docs set `status` = 'Tidak Berlaku' where tanggal_berakhir <= '$datenow' || tanggal_perjanjian > '$datenow'");
     //     // } else if ($datenow < $data[8]) {
 }
 

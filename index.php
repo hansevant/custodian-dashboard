@@ -8,9 +8,11 @@ $username = "root";
 $pw = "";
 $db = "cutodi";
 
-$conn = mysqli_connect($server, $username, $pw, $db);
 error_reporting(0);
-if ($_SESSION['id']) {
+
+$conn = mysqli_connect($server, $username, $pw, $db);
+// error_reporting(0)   ;
+if (isset($_SESSION['id'])) {
     echo "<script>
     location.href = 'dashboard/';
   </script>";
@@ -19,38 +21,80 @@ if ($_SESSION['id']) {
 if (isset($_POST["login"])) {
 
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $userpass = $_POST['password'];
 
     //to prevent from mysqli injection  
     // $username = stripcslashes($username);
     // $password = stripcslashes($password);
     // $username = mysqli_real_escape_string($conn, $username);
-    // $password = mysqli_real_escape_string($conn, $password);
+    // $password = mysqli_real_escape_string($conn, $password)
 
-    $sql = "select * from users where username = '$username' and `password` = md5('$password')";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $count = mysqli_num_rows($result);
+    // $sql = mysqli_query($conn, "SELECT * from users where username = '$username' and `password` = md5('$password')");
+    $sql2 = mysqli_query($conn, "SELECT * from users where username = '$username'");
+    // $row = mysqli_fetch_array($sql, MYSQLI_ASSOC);
+    $row2 = mysqli_fetch_array($sql2, MYSQLI_ASSOC);
+    // $count = mysqli_num_rows($sql);
+    $count2 = mysqli_num_rows($sql2);
+    $approve = $row2['is_approved'];
+    $status = $row2['status'];
+    $password = $row2['password'];
+    $role = $row2['role'];
 
-    if ($count == 1) {
-        $_SESSION['role'] = $row['role'];
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['name'] = $row['name'];
-
-        echo "<script> alert('Login successful')
-        location.href='dashboard/index.php'</script>";
+    // cek username terdaftar tidak atau akunya terkunci atau sudah tidak aktif 
+    if (mysqli_num_rows($sql2) == 0) {
+        echo "<script> alert('Login failed. Invalid username or password.')
+        location.href='index.php?f=true'</script>";
+    } elseif ($approve != 1) {
+        echo "<script> alert('Login failed. Your Account needs to be approved by admin')
+        location.href='index.php'</script>";
+    } elseif ($status == 0) {
+        echo "<script> alert('Login failed. Your Account has been deactivated by admin.')
+        location.href='index.php'</script>";
+    } elseif ($status == 2) {
+        echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin3.')
+        location.href='index.php'</script>";
     } else {
-        echo "<script> alert('Login failed. Invalid username or password.')</script>";
+        // cek apakah kredensial yang disubmit sesuai tidak 
+        if (password_verify($userpass, $password)) {
+            $_SESSION['login'] = true;
+            $_SESSION['role'] = $row2['role'];
+            $_SESSION['id'] = $row2['id'];
+            $_SESSION['name'] = $row2['name'];
+            // reset login time ke 0
+            mysqli_query($conn, "UPDATE users SET login_time = 0 where username = '$username' ");
+            if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'superadmin') {
+                echo "<script> alert('Login successful')
+            location.href='dashboard/accounts.php'</script>";
+                exit;
+            } else {
+                echo "<script> alert('Login successful')
+            location.href='dashboard/index.php'</script>";
+                exit;
+            }
+        } else {
+            // $check3 = mysqli_fetch_array($sql2);
+            $logintimes = $row2['login_time'];
+            // echo $logintimes;
+            // die;
+            if ($role == 'admin') {
+                echo "<script> alert('Login failed. Invalid password.')
+                location.href='index.php'</script>";
+                exit;
+            }
+            if ($logintimes > 2) {
+                $sql4 = "UPDATE users SET `status` = 2 where username = '$username'";
+                mysqli_query($conn, $sql4);
+                echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin2.')</script>";
+            } elseif ($logintimes < 3) {
+                $trylogin = mysqli_query($conn, "UPDATE users SET login_time = login_time + 1 where username = '$username' ");
+                // $sql5 = mysqli_query($conn, "SELECT login_time FROM users WHERE username = '$username'");
+                // $check = mysqli_fetch_array($sql5);
+                // $logintime = $check['login_time'];
+                echo "<script> alert('Login failed. Invalid username or password.')
+                location.href='index.php?f=true'</script>";
+            }
+        }
     }
-
-    // otorisasi
-    // if ($row['role'] == 'RM') {
-    //     echo 'anda adalah rm';
-    // } else if ($row['role'] == 'C') {
-    //     echo 'anda adalah Compliance';
-    // } else {
-    //     echo "anda bukan siapa siapa";
-    // }
 }
 ?>
 
@@ -59,12 +103,13 @@ if (isset($_POST["login"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/assets/css/style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="partials/logo-icon.png">
 </head>
 
 <body>
     <div class="center">
-        <img src="logo.png" alt="">
+        <img src="src/assets/img/logo.png" alt="">
         <h1>Please Login</h1>
         <form action="" method="post">
             <div class="txt_field">
@@ -77,6 +122,9 @@ if (isset($_POST["login"])) {
                 <span></span>
                 <label for="pass">Password</label>
             </div>
+            <?php if (isset($_GET['f'])) { ?>
+                <p style="color: orangered;">Login failed. Invalid username or password.</p>
+            <?php } ?>
             <input type="submit" value="Login" name="login">
         </form>
     </div>

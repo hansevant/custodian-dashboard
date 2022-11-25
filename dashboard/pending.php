@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['id']) > 0) {
 <head>
     <!-- This page plugin datatables CSS -->
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Dokumen Pending</title>
 </head>
 
@@ -35,7 +35,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -43,7 +43,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'z' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -54,20 +54,6 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello <?= $_SESSION['name'];; ?>!</h3>
-                    </div>
-                    <div class="col-5 align-self-center">
-                        <?php if ($_SESSION['role'] == 'RM') { ?>
-                            <div class="customize-input float-right">
-                                <a href="upload.php" class="btn btn-primary">Upload Dokumen + </a>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -93,54 +79,49 @@ if (!isset($_SESSION['id']) > 0) {
 
                                 <hr class="mt-5">
                                 <div class="table-responsive">
-                                    <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
+                                    <table style="color:#333;font-size: 14px;" id="myTable" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
-                                                <?php if ($_SESSION['role'] == 'CS') { ?>
-                                                    <th>Aksi</th>
+                                                <th class="text-center" width="30%">Dokumen</th>
+                                                <th class="text-center" width="30%">Nasabah</th>
+                                                <th class="text-center" width="25%">Jenis Perjanjian</th>
+                                                <?php if ($_SESSION['role'] == 'Approver') { ?>
+                                                    <th class="text-center" width="15%">Aksi</th>
+                                                <?php } else { ?>
+                                                    <th class="text-center" width="15%">Approver</th>
                                                 <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $i = 1;
+                                            if ($_SESSION['role'] == 'Maker') {
 
-                                            if ($_SESSION['role'] == 'RM') {
-
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0");
+                                                $sql = mysqli_query($conn, "SELECT docs.id_dokumen, docs.nama_dokumen, docs.nasabah, docs.jenis_perjanjian, users.name FROM docs INNER JOIN users ON docs.approver = users.id where docs.is_approved = 0");
                                             } else {
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs where is_approved = 0 AND approver = '$_SESSION[id]'");
+                                                $sql = mysqli_query($conn, "SELECT docs.id_dokumen, docs.nama_dokumen, docs.nasabah, docs.jenis_perjanjian FROM docs where is_approved = 0 AND approver = '$_SESSION[id]'");
                                             }
 
-                                            $n = 1;
                                             while ($data = mysqli_fetch_array($sql)) {
-                                                $now = gmdate("Y-m-d", time());
-                                                $remaining = strtotime($data[8]) - time();
-                                                $days_remaining = floor($remaining / 86400);
-                                                $hours_remaining = floor(($remaining % 86400) / 3600);
                                             ?>
 
                                                 <tr>
                                                     <td><a href="doc.php?id_dokumen=<?= $data[0] ?>"><?= $data[1]; ?></a></td>
+                                                    <td><?= $data[2]; ?></td>
                                                     <td><?= $data[3]; ?></td>
-                                                    <td><?= $data[4]; ?></td>
-                                                    <td><?= $data[10]; ?></td>
-                                                    <?php if ($_SESSION['role'] == 'CS') { ?>
+                                                    <?php if ($_SESSION['role'] == 'Approver') { ?>
                                                         <td>
-                                                            <a href="functions/TL.php?approve=<?= $data[0] ?>" class="btn btn-success">
+                                                            <a href="functions/approver.php?approve=<?= $data[0] ?>" class="btn btn-sm btn-success" data-toggle="tooltip" title="Approve">
                                                                 <i class="fas fa-check"></i>
                                                             </a>
-                                                            <a href="functions/TL.php?reject=<?= $data[0] ?>" class="btn btn-warning">
+                                                            <a href="functions/approver.php?reject=<?= $data[0] ?>" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Reject">
                                                                 <i class="fas fa-times"></i>
                                                             </a>
-                                                            <a href="functions/TL.php?cancel=<?= $data[0] ?>" class="btn btn-danger">
+                                                            <a href="functions/approver.php?cancel=<?= $data[0] ?>" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Cancel">
                                                                 <i class="fas fa-trash"></i>
                                                             </a>
                                                         </td>
+                                                    <?php } else { ?>
+                                                        <td><?= $data[4]; ?></td>
                                                     <?php } ?>
                                                 </tr>
 
@@ -148,12 +129,13 @@ if (!isset($_SESSION['id']) > 0) {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
-                                                <?php if ($_SESSION['role'] == 'CS') { ?>
-                                                    <th>Aksi</th>
+                                                <th class="text-center">Dokumen</th>
+                                                <th class="text-center">Nasabah</th>
+                                                <th class="text-center">Jenis Perjanjian</th>
+                                                <?php if ($_SESSION['role'] == 'Approver') { ?>
+                                                    <th class="text-center">Aksi</th>
+                                                <?php } else { ?>
+                                                    <th class="text-center">Approver</th>
                                                 <?php } ?>
                                             </tr>
                                         </tfoot>
@@ -204,14 +186,13 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
 
     <!-- Data Table -->
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         });
     </script>
     <script src="../src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="../src/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['id']) > 0) {
 <head>
     <!-- This page plugin datatables CSS -->
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Rejected Document</title>
 </head>
 
@@ -35,7 +35,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -43,7 +43,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'z' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -54,20 +54,6 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello <?= $_SESSION['name'];; ?>!</h3>
-                    </div>
-                    <div class="col-5 align-self-center">
-                        <?php if ($_SESSION['role'] == 'RM') { ?>
-                            <div class="customize-input float-right">
-                                <a href="upload.php" class="btn btn-primary">Upload Dokumen + </a>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -93,15 +79,15 @@ if (!isset($_SESSION['id']) > 0) {
 
                                 <hr class="mt-5">
                                 <div class="table-responsive">
-                                    <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
+                                    <table style="color:#333;font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
                                         <thead>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
-                                                <?php if ($_SESSION['role'] == 'RM') { ?>
-                                                    <th>Aksi</th>
+                                                <th class="text-center">Dokumen</th>
+                                                <th class="text-center">Nasabah</th>
+                                                <th class="text-center">Jenis Perjanjian</th>
+                                                <th class="text-center">Status</th>
+                                                <?php if ($_SESSION['role'] == 'Maker') { ?>
+                                                    <th class="text-center">Aksi</th>
                                                 <?php } ?>
                                             </tr>
                                         </thead>
@@ -129,10 +115,14 @@ if (!isset($_SESSION['id']) > 0) {
                                                     <td><?= $data[3]; ?></td>
                                                     <td><?= $data[4]; ?></td>
                                                     <td><?= $data[10]; ?></td>
-                                                    <?php if ($_SESSION['role'] == 'RM') { ?>
+                                                    <?php if ($_SESSION['role'] == 'Maker') { ?>
                                                         <td>
-                                                            <a href="edit.php?id=<?= $data[0]; ?>" class="btn btn-success">
+                                                            <!-- <a href="edit.php?id=<?= $data[0]; ?>" class="btn btn-success">
                                                                 <i class="icon-pencil"></i> Edit
+                                                            </a> -->
+                                                            <i class="fas fa-pencil-alt text-primary font-12 mr-1"></i>
+                                                            <a href="edit.php?id=<?= $data[0]; ?>">
+                                                                Edit
                                                             </a>
                                                         </td>
                                                     <?php } ?>
@@ -142,12 +132,12 @@ if (!isset($_SESSION['id']) > 0) {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Status</th>
-                                                <?php if ($_SESSION['role'] == 'RM') { ?>
-                                                    <th>Aksi</th>
+                                                <th class="text-center">Dokumen</th>
+                                                <th class="text-center">Nasabah</th>
+                                                <th class="text-center">Jenis Perjanjian</th>
+                                                <th class="text-center">Status</th>
+                                                <?php if ($_SESSION['role'] == 'Maker') { ?>
+                                                    <th class="text-center">Aksi</th>
                                                 <?php } ?>
                                             </tr>
                                         </tfoot>
@@ -198,14 +188,13 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
 
     <!-- Data Table -->
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         });
     </script>
     <script src="../src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="../src/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
 </body>
 
 </html>

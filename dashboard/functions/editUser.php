@@ -2,24 +2,45 @@
 
 include '../../function.php';
 session_start();
+if ($_SESSION['role'] != 'admin') {
+    echo "<script>alert('Forbidden!');location.href='../template.php'</script>";
+}
 
-$id = $_POST['id'];
-$username = $_POST['username'];
-$oldusername = $_POST['oldusername'];
-$role = $_POST['role'];
+if (isset($_POST["editrole"])) {
+    $id = $_POST['id'];
+    // $username = $_POST['username'];
+    // $oldusername = $_POST['oldusername'];
+    $role = $_POST['role'];
 
-$check = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users WHERE username ='$username'"));
-if ($oldusername == $username) {
-    $sql = mysqli_query($conn, "UPDATE users SET `role` = '$role' WHERE id = '$id'");
-    echo "<script>alert('successfully added new user');
-    location.href='../accounts.php'</script>";
-} else {
-    if ($check > 0) {
-        echo "<script>alert('Failed! username already exist, please choose another username');
-        location.href='../edituser.php?id=$id'</script>";
-    } else {
-        $sql = mysqli_query($conn, "UPDATE users SET username = '$username', `role` = '$role' WHERE id = '$id'");
-        echo "<script>alert('successfully added new user');
-    location.href='../accounts.php'</script>";
-    }
+    $sql = mysqli_query($conn, "UPDATE users SET `role` = '$role', is_approved = 2 WHERE id = '$id'");
+    echo "<script>alert('successfully update the user');
+        location.href='../accounts.php'</script>";
+}
+
+if (isset($_GET["activateuser"])) {
+
+    $id = $_GET["activateuser"];
+
+    $sql = mysqli_query($conn, "UPDATE users SET `status` = 1 , `login_time` = 0 WHERE id = '$id'");
+    echo "<script>alert('successfully activate or unlock the user');
+    location.href='../edituser.php?id=$id'</script>";
+}
+
+if (isset($_GET["disableuser"])) {
+
+    $id = $_GET["disableuser"];
+
+    $sql = mysqli_query($conn, "UPDATE users SET `status` = 0 WHERE id = '$id'");
+    echo "<script>alert('successfully disabled the user');
+    location.href='../edituser.php?id=$id'</script>";
+}
+
+if (isset($_GET["resetpass"])) {
+
+    $id = $_GET["resetpass"];
+
+    $resetpass = password_hash('custodithebest', PASSWORD_DEFAULT);
+    $sql = mysqli_query($conn, "UPDATE users SET `password` = '$resetpass', reset_pass = 1, `status` = 1 , `login_time` = 0 WHERE id = '$id'");
+    echo "<script>alert('successfully reset the password');
+    location.href='../edituser.php?id=$id'</script>";
 }

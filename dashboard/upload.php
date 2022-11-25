@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -11,7 +11,7 @@ if (!isset($_SESSION['id']) > 0) {
 <html lang="en">
 
 <head>
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Upload Dokumen</title>
 </head>
 
@@ -33,7 +33,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -41,7 +41,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'y' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -52,7 +52,7 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb">
+            <!-- <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-7 align-self-center">
                         <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning <?= $_SESSION['name'];; ?>!</h3>
@@ -66,13 +66,13 @@ if (!isset($_SESSION['id']) > 0) {
                             </nav>
                         </div>
                     </div>
-                    <!-- <div class="col-5 align-self-center">
+                    <div class="col-5 align-self-center">
                         <div class="customize-input float-right">
                             <a href="upload.php" class="btn btn-primary">Upload Dokumen + </a>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
-            </div>
+            </div> -->
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -98,20 +98,20 @@ if (!isset($_SESSION['id']) > 0) {
                                 <hr>
                                 <form action="functions/uploadDoc.php" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Nama Dokumen</label>
-                                        <input type="text" class="form-control" name="nama_dokumen" required>
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Nama Dokumen <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" autofocus name="nama_dokumen" required>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Jenis Perjanjian</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Jenis Perjanjian <span class="text-danger">*</span></label>
                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="jenis_perjanjian" required>
                                                     <option disabled selected value>...</option>
                                                     <option value="Safekeeping">Safekeeping</option>
                                                     <option value="KPD (Kontrak Pengelolaan Dana)">KPD (Kontrak Pengelolaan Dana)</option>
                                                     <option value="Reksadana">Reksadana</option>
                                                     <option value="EBA (Efek Beragun Aset)">EBA (Efek Beragun Aset)</option>
-                                                    <option value="Ops memo">Ops memo</option>
+                                                    <option value="Ops Memo">Ops Memo</option>
                                                     <option value="Selling Agent">Selling Agent</option>
                                                     <option value="SLA (Service Level Agreement)">SLA (Service Level Agreement)</option>
                                                 </select>
@@ -119,7 +119,7 @@ if (!isset($_SESSION['id']) > 0) {
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nasabah</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nasabah <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="nasabah" required>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@ if (!isset($_SESSION['id']) > 0) {
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Perjanjian</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Nomor Perjanjian <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="nomor_perjanjian" required>
                                             </div>
                                         </div>
@@ -141,13 +141,13 @@ if (!isset($_SESSION['id']) > 0) {
                                     <div class="row mb-2">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Tanggal Perjanjian</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Tanggal Perjanjian <span class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" name="tanggal_perjanjian" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Tanggal Berakhir</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Tanggal Berakhir <span class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" name="tanggal_berakhir" required>
                                             </div>
                                         </div>
@@ -155,17 +155,18 @@ if (!isset($_SESSION['id']) > 0) {
                                     <div class="row mb-2">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="formFile" class="form-label">Upload Dokumen</label>
+                                                <label for="formFile" class="form-label">Upload Dokumen <span class="text-danger">*</span></label>
                                                 <input class="form-control" type="file" id="formFile" name="dokumen" onchange="preview()" required>
+                                                <small id="formFile" class="form-text text-muted">Hanya menerima tipe file PDF</small>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Checker/Signer</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Approver <span class="text-danger">*</span></label>
                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="approver" required>
                                                     <option disabled selected value>Choose..</option>
                                                     <?php
-                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'CS'");
+                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'Approver'");
                                                     while ($user = mysqli_fetch_array($users)) {
                                                     ?>
 
@@ -232,7 +233,7 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
 
 
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
 </body>
 
 </html>

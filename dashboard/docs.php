@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -13,8 +13,22 @@ if (!isset($_SESSION['id']) > 0) {
 <head>
     <!-- This page plugin datatables CSS -->
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <?php include "partials/head.php"; ?>
+    <link href="../src/assets/extra-libs/datatables.net/css/buttons.dataTables.min.css" rel="stylesheet">
+    <?php include "../partials/head.php"; ?>
     <title>Dokumen</title>
+    <style>
+        .dt-button.red {
+            color: red;
+            background: none;
+            margin-bottom: 10px;
+        }
+
+        .dt-button.green {
+            color: limegreen;
+            background: none;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,7 +49,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -43,7 +57,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'y' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -54,22 +68,6 @@ if (!isset($_SESSION['id']) > 0) {
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-7 align-self-center">
-                        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello <?= $_SESSION['name']; ?>!</h3>
-                        <div class="d-flex align-items-center">
-                        </div>
-                    </div>
-                    <div class="col-5 align-self-center">
-                        <?php if ($_SESSION['role'] == 'RM') { ?>
-                            <div class="customize-input float-right">
-                                <a href="upload.php" class="btn btn-primary">Add Document + </a>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -91,13 +89,19 @@ if (!isset($_SESSION['id']) > 0) {
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title float-left">Custodian Documents</h4>
+                                <div class="btn-group float-left">
+                                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Custodian Documents</h3>
+                                </div>
 
+                                <!-- <h4 class="card-title float-left">Custodian Documents</h4> -->
                                 <!-- Modal Filter -->
 
                                 <div class="btn-group float-right">
-                                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#top-modal"><i class="fa fa-filter"></i> Filters</button>
-                                    <a href="?" class="btn btn-outline-secondary"><i class="fas fa-undo"></i> Reset</a>
+                                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#top-modal"><i class="fa fa-filter"></i> Filters</button>
+                                    <!-- <a href="?" class="btn btn-outline-secondary"><i class="fas fa-undo"></i> Reset</a> -->
+                                    <?php if ($_SESSION['role'] == 'Maker') { ?>
+                                        <a href="upload.php" class="ml-2 btn btn-primary">+ Add Document </a>
+                                    <?php } ?>
                                 </div>
 
                                 <div id="top-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
@@ -109,13 +113,13 @@ if (!isset($_SESSION['id']) > 0) {
                                             </div>
                                             <div class="modal-body">
                                                 <form method="POST" action="">
-                                                    <table style="width:100%;">
+                                                    <table>
                                                         <tr>
                                                             <td width="70px" valign="top">Jenis</td>
                                                             <td valign="top">
                                                                 <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Ops memo'" id="customCheck1">
-                                                                    <label class="custom-control-label" for="customCheck1">Ops memo</label>
+                                                                    <input type="checkbox" class="custom-control-input" name="type[]" value="'Ops Memo'" id="customCheck1">
+                                                                    <label class="custom-control-label" for="customCheck1">Ops Memo</label>
                                                                 </div>
                                                                 <div class="custom-control custom-checkbox">
                                                                     <input type="checkbox" class="custom-control-input" name="type[]" value="'Reksadana'" id="customCheck2">
@@ -134,7 +138,7 @@ if (!isset($_SESSION['id']) > 0) {
                                                                 <!-- <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
                                                                 <label><input type="checkbox" name="type[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br> -->
                                                             </td>
-                                                            <td valign="top">
+                                                            <td valign="top" style="padding-left: 8px;">
                                                                 <!-- <label><input type="checkbox" name="type[]" value="'Selling Agent'">Selling Agent</label><br>
                                                                 <label><input type="checkbox" name="type[]" value="'Reksadana'">Reksadana</label><br>
                                                                 <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
@@ -155,7 +159,7 @@ if (!isset($_SESSION['id']) > 0) {
                                                         </tr>
                                                     </table>
                                                     <hr>
-                                                    <table style="width:100%;">
+                                                    <table>
                                                         <tr>
                                                             <td width="70px" valign="top">Status</td>
                                                             <td valign="top">
@@ -175,7 +179,7 @@ if (!isset($_SESSION['id']) > 0) {
                                                         </tr>
                                                     </table>
                                                     <hr>
-                                                    <table style="width:100%;">
+                                                    <table>
                                                         <tr>
                                                             <td width="70px" valign="top">Tanggal</td>
                                                             <td>
@@ -202,26 +206,24 @@ if (!isset($_SESSION['id']) > 0) {
 
                                 <hr class="mt-5">
                                 <div class="table-responsive">
-                                    <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
+                                    <table width="1600" style="color:#333;font-size: 14px;" id="myTable" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Nomor Perjanjian</th>
-                                                <th>Tanggal Perjanjian</th>
-                                                <th>Tanggal Berakhir</th>
-                                                <th>SLA</th>
-                                                <th>Status</th>
+                                                <th class="text-center">Dokumen</th>
+                                                <th class="text-center">Nasabah</th>
+                                                <th class="text-center">Jenis Perjanjian</th>
+                                                <th class="text-center">Nomor Perjanjian</th>
+                                                <th class="text-center">Tanggal Perjanjian</th>
+                                                <th class="text-center">Tanggal Berakhir</th>
+                                                <th class="text-center">SLA</th>
+                                                <th class="text-center">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
                                             <?php
                                             if (isset($_POST['simpan'])) {
-                                                // foreach ($_POST['hobi'] as $value) {
-                                                //     echo $value . ',';
-                                                // }
+                                                // fitur filter dokumen 
                                                 $and = 'is_approved = 1';
                                                 if (!empty($_POST['status'])) {
                                                     $filter = implode(",", $_POST['status']);
@@ -234,11 +236,65 @@ if (!isset($_SESSION['id']) > 0) {
                                                 if (!empty($_POST['firstdate']) && !empty($_POST['lastdate'])) {
                                                     $fd = $_POST['firstdate'];
                                                     $ld = $_POST['lastdate'];
-                                                    // echo $_POST['lastdate'];
-                                                    // echo $_POST['firstdate'];
                                                     $and .= " AND tanggal_perjanjian BETWEEN '$fd' AND '$ld'";
                                                 }
                                                 $sql = mysqli_query($conn, "SELECT * FROM docs WHERE " . $and);
+                                            } elseif (isset($_GET['jan'])) {
+                                                $jan = $_GET['jan'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$jan%' AND is_approved = 1");
+                                            } elseif (isset($_GET['feb'])) {
+                                                $feb = $_GET['feb'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$feb%' AND is_approved = 1");
+                                            } elseif (isset($_GET['mar'])) {
+                                                $mar = $_GET['mar'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$mar%' AND is_approved = 1");
+                                            } elseif (isset($_GET['apr'])) {
+                                                $apr = $_GET['apr'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$apr%' AND is_approved = 1");
+                                            } elseif (isset($_GET['may'])) {
+                                                $may = $_GET['may'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$may%' AND is_approved = 1");
+                                            } elseif (isset($_GET['jun'])) {
+                                                $jun = $_GET['jun'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$jun%' AND is_approved = 1");
+                                            } elseif (isset($_GET['jul'])) {
+                                                $jul = $_GET['jul'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$jul%' AND is_approved = 1");
+                                            } elseif (isset($_GET['aug'])) {
+                                                $aug = $_GET['aug'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$aug%' AND is_approved = 1");
+                                            } elseif (isset($_GET['sep'])) {
+                                                $sep = $_GET['sep'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$sep%' AND is_approved = 1");
+                                            } elseif (isset($_GET['oct'])) {
+                                                $oct = $_GET['oct'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$oct%' AND is_approved = 1");
+                                            } elseif (isset($_GET['nov'])) {
+                                                $nov = $_GET['nov'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$nov%' AND is_approved = 1");
+                                            } elseif (isset($_GET['des'])) {
+                                                $des = $_GET['des'];
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE tanggal_perjanjian LIKE '%$des%' AND is_approved = 1");
+                                            } elseif (isset($_GET['kpd'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'KPD (Kontrak Pengelolaan Dana)' AND is_approved = 1");
+                                            } elseif (isset($_GET['eba'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'EBA (Efek Beragun Aset)' AND is_approved = 1");
+                                            } elseif (isset($_GET['sla'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'SLA (Service Level Agreement)' AND is_approved = 1");
+                                            } elseif (isset($_GET['opsmemo'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'Ops memo' AND is_approved = 1");
+                                            } elseif (isset($_GET['reksadana'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'Reksadana' AND is_approved = 1");
+                                            } elseif (isset($_GET['safekeeping'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'Safekeeping' AND is_approved = 1");
+                                            } elseif (isset($_GET['sellingagent'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE jenis_perjanjian = 'Selling Agent' AND is_approved = 1");
+                                            } elseif (isset($_GET['berlaku'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE `status` = 'Berlaku' AND is_approved = 1");
+                                            } elseif (isset($_GET['tidakberlaku'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE `status` = 'Tidak Berlaku' AND is_approved = 1");
+                                            } elseif (isset($_GET['masareview'])) {
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE `status` = 'Masa Review' AND is_approved = 1");
                                             } else {
                                                 $sql = mysqli_query($conn, "SELECT * FROM docs WHERE is_approved = 1");
                                             }
@@ -249,16 +305,19 @@ if (!isset($_SESSION['id']) > 0) {
                                                 $remaining = strtotime($data[8]) - time();
                                                 $days_remaining = floor($remaining / 86400);
                                                 $hours_remaining = floor(($remaining % 86400) / 3600);
+
+                                                $tp = date("d-m-Y", strtotime($data[7]));
+                                                $tb =  date("d-m-Y", strtotime($data[8]));
                                             ?>
 
                                                 <tr>
-                                                    <td><a href="doc.php?id_dokumen=<?= $data[0] ?>"><?= $data[1]; ?></a></td>
-                                                    <td><?= $data[3]; ?></td>
-                                                    <td><?= $data[4]; ?></td>
-                                                    <td><?= $data[5]; ?></td>
-                                                    <td><?= $data[7]; ?></td>
-                                                    <td><?= $data[8]; ?></td>
-                                                    <td>
+                                                    <td style="width:200px;"><a href="doc.php?id_dokumen=<?= $data[0] ?>"><?= $data[1]; ?></a></td>
+                                                    <td style="width:200px;"><?= $data[3]; ?></td>
+                                                    <td style="white-space: nowrap;"><?= $data[4]; ?></td>
+                                                    <td style="white-space: nowrap;"><?= $data[5]; ?></td>
+                                                    <td style="width:150px"><?= $tp; ?></td>
+                                                    <td style="width:150px"><?= $tb; ?></td>
+                                                    <td style="white-space: nowrap;">
                                                         <?php
                                                         if ($data[10] == 'masa review') {
                                                             echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
@@ -267,21 +326,21 @@ if (!isset($_SESSION['id']) > 0) {
                                                         }
                                                         ?>
                                                     </td>
-                                                    <td><?= $data[10]; ?></td>
+                                                    <td style="white-space: nowrap;"><?= $data[10]; ?></td>
                                                 </tr>
 
                                             <?php } ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Dokumen</th>
-                                                <th>Nasabah</th>
-                                                <th>Jenis Perjanjian</th>
-                                                <th>Nomor Perjanjian</th>
-                                                <th>Tanggal Perjanjian</th>
-                                                <th>Tanggal Berakhir</th>
-                                                <th>SLA</th>
-                                                <th>Status</th>
+                                                <th class="text-center">Dokumen</th>
+                                                <th class="text-center">Nasabah</th>
+                                                <th class="text-center">Jenis Perjanjian</th>
+                                                <th class="text-center">Nomor Perjanjian</th>
+                                                <th class="text-center">Tanggal Perjanjian</th>
+                                                <th class="text-center">Tanggal Berakhir</th>
+                                                <th class="text-center">SLA</th>
+                                                <th class="text-center">Status</th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -331,14 +390,33 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
 
     <!-- Data Table -->
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
     <script>
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Report Excel ',
+                        className: 'green',
+                        title: 'Summary'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> Report PDF ',
+                        className: 'red',
+                        title: 'Summary'
+                    },
+                ]
+            });
         });
     </script>
     <script src="../src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="../src/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
+    <script src="../src/assets/extra-libs/datatables.net/js/dataTables.buttons.min.js"></script>
+    <script src="../src/assets/extra-libs/datatables.net/js/jszip.min.js"></script>
+    <script src="../src/assets/extra-libs/datatables.net/js/pdfmake.min.js"></script>
+    <script src="../src/assets/extra-libs/datatables.net/js/vfs_fonts.js"></script>
+    <script src="../src/assets/extra-libs/datatables.net/js/buttons.html5.min.js"></script>
 </body>
 
 </html>

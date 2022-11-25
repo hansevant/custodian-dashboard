@@ -10,7 +10,18 @@ $db = "cutodi";
 // $sql4 = mysqli_query($conn, "SELECT * FROM users inner join comments on users.id=comments.id_user");
 
 $conn = mysqli_connect($server, $username, $pw, $db);
+echo password_hash('superadmin', PASSWORD_DEFAULT);
 
+// if (password_verify('custodian2023', '$2y$10$LbgGhhiPJ4A0Xs3CjcyiPOu936Exl55y9iI0Ibdhg/94TGgCLylI6')) {
+//     echo 'Password is valid!';
+// } else {
+//     echo 'Invalid password.';
+// }
+
+$sql = mysqli_query($conn, "SELECT * from users where username = 'evan'");
+$row = mysqli_fetch_array($sql);
+$ban = $row['is_disabled'];
+echo $ban . "<br>";
 $select_id = mysqli_query($conn, "SELECT COUNT(*) AS idTerbesar FROM docs");
 
 if ($select_id == FALSE) {
@@ -31,7 +42,7 @@ $deadline = '2022-10-03';
 // $timestamp = $date->getTimestamp();
 $now = gmdate("l jS F Y ", time());
 $batas = date("Y-m-d", strtotime($deadline . '-1 month'));
-echo  '</br>' . $now . '</br>';
+echo  '</br>' . gmdate("Y", time()) . '</br>';
 // echo $deadline . '</br>';
 // echo $batas  . '</br>';
 $remaining = strtotime($deadline) - time();

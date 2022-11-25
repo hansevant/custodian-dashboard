@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 // die($_GET['id_dokumen']);
@@ -12,7 +12,7 @@ if (!isset($_SESSION['id']) > 0) {
 <html lang="en">
 
 <head>
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Detail Document</title>
 </head>
 
@@ -34,7 +34,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -42,7 +42,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'y' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -69,9 +69,9 @@ if (!isset($_SESSION['id']) > 0) {
                 $id_dokumen = $_GET['id_dokumen'];
 
                 $sql = mysqli_query($conn, "SELECT * FROM docs WHERE id_dokumen = '$id_dokumen'");
-                $sql2 = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen' LIMIT 4");
-                $sql2y = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen'");
-                $sql3 = mysqli_query($conn, "SELECT * FROM comments inner join users on comments.id_user=users.id WHERE id_dokumen = '$id_dokumen'");
+                $sql2 = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen' ORDER BY created_at DESC LIMIT 4 ");
+                $sql2y = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen' ORDER BY created_at DESC");
+                $sql3 = mysqli_query($conn, "SELECT comments.id_comment, comments.id_user, comments.comment, comments.created_at, users.name FROM comments inner join users on comments.id_user=users.id WHERE id_dokumen = '$id_dokumen'");
                 // $sql4 = mysqli_query($conn, "SELECT * FROM users inner join comments on users.id=comments.id_user ");
 
                 $doc = mysqli_fetch_array($sql);
@@ -84,23 +84,23 @@ if (!isset($_SESSION['id']) > 0) {
 
                 <a download href="docs/<?= $doc[2]; ?>" class="btn waves-effect waves-light btn-rounded btn-primary"><i class="fas fa-download"></i> Download</a>
                 <?php
-                if ($_SESSION['role'] == 'RM' && $doc[12] != 0) {
+                if ($_SESSION['role'] == 'Maker' && $doc[12] != 0) {
                 ?>
                     <a href="edit.php?id=<?= $doc[0] ?>" class="float-right btn btn-warning btn-rounded waves-effect waves-light px-3">
                         <i class="icon-pencil"></i>
                         Edit</a>
                 <?php
                 }
-                if ($_SESSION['role'] == 'CS' && $doc[12] == 0) {
+                if ($_SESSION['role'] == 'Approver' && $doc[12] == 0) {
                 ?>
                     <div class="float-right">
-                        <a href="functions/TL.php?approve=<?= $doc[0] ?>" class="btn btn-success">
+                        <a href="functions/Approver.php?approve=<?= $doc[0] ?>" class="btn btn-success">
                             <i class="fas fa-check"></i>
                         </a>
-                        <a href="functions/TL.php?reject=<?= $doc[0] ?>" class="btn btn-warning">
+                        <a href="functions/Approver.php?reject=<?= $doc[0] ?>" class="btn btn-warning">
                             <i class="fas fa-times"></i>
                         </a>
-                        <a href="functions/TL.php?cancel=<?= $doc[0] ?>" class="btn btn-danger">
+                        <a href="functions/Approver.php?cancel=<?= $doc[0] ?>" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -133,7 +133,7 @@ if (!isset($_SESSION['id']) > 0) {
                                             <?php
                                             if ($_SESSION['id'] == $comment['id_user']) {
                                             ?>
-                                                <a href="functions/deleteComment.php?id_comment=<?= $comment['id_comment'] ?>&id_dokumen=<?= $doc[0] ?>" class="text-danger h3">
+                                                <a href="functions/comment.php?id_comment=<?= $comment['id_comment'] ?>&id_dokumen=<?= $doc[0] ?>" class="text-danger h3">
                                                     <i class="icon-trash float-right"></i>
                                                 </a>
                                             <?php
@@ -144,13 +144,13 @@ if (!isset($_SESSION['id']) > 0) {
                                         <?php
                                         }
                                         ?>
-                                        <?php if ($_SESSION['role'] != 'op' && $_SESSION['role'] != 'admin') {
+                                        <?php if ($_SESSION['role'] != 'Operation' && $_SESSION['role'] != 'admin') {
                                         ?>
                                             <form class="mt-3" action="functions/comment.php" method="POST">
                                                 <div class="form-group">
                                                     <input type="hidden" value="<?= $doc[0]; ?>" name="id_dokumen">
                                                     <textarea class="form-control" rows="3" placeholder="Text Here..." name="comment"></textarea>
-                                                    <button type="submit" class="btn waves-effect waves-light btn-rounded btn-primary mt-3 px-4 float-right">Send</button>
+                                                    <button type="submit" name="post_comment" class="btn waves-effect waves-light btn-rounded btn-primary mt-3 px-4 float-right">Send</button>
                                                 </div>
                                             </form>
                                         <?php
@@ -178,7 +178,11 @@ if (!isset($_SESSION['id']) > 0) {
                                         <p>Sisa Batas Review :
                                             <?php
                                             if ($now >= $doc[9] && $now < $doc[8]) {
-                                                echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
+                                                if ($days_remaining > 0) {
+                                                    echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
+                                                } else {
+                                                    echo "sisa waktu : $hours_remaining jam lagi<br>";
+                                                }
                                             } else {
                                                 echo '-';
                                             }
@@ -347,9 +351,7 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
-
-
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
 </body>
 
 </html>

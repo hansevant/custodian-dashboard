@@ -5,14 +5,19 @@ header("X-XSS-Protection: 1; mode=block");
 if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
+if ($_SESSION['role'] != 'superadmin' && $_SESSION['role'] != 'admin') {
+    echo "<script>location.href='index.php'</script>";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <!-- This page plugin datatables CSS -->
+    <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <?php include "../partials/head.php"; ?>
-    <title>Account Management</title>
+    <title>Pending User</title>
 </head>
 
 <body>
@@ -40,7 +45,7 @@ if (!isset($_SESSION['login']) > 0) {
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
-        <?php $active = 'b' ?>
+        <?php $active = 'c' ?>
         <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
@@ -69,54 +74,82 @@ if (!isset($_SESSION['login']) > 0) {
                 <!-- *************************************************************** -->
                 <!-- Start Sales Charts Section -->
                 <!-- *************************************************************** -->
-                <?php
-                $id = $_SESSION["id"];
-                $data = mysqli_query($conn, "SELECT * FROM users WHERE id = '$id'");
-                $row = mysqli_fetch_row($data);
-                ?>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
+                                <h4 class="card-title float-left">Pending User</h4>
 
-                                <h4 class="card-title">Change Password</h4>
-                                <hr>
-                                <form action="functions/account.php" method="POST">
-                                    <input type="hidden" name="id" value="<?= $row[0]; ?>">
-                                    <div class="form-group">
-                                        <label>Old Password</label>
-                                        <input type="password" class="form-control" placeholder="" name="oldpassword" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>New Password</label>
-                                        <input type="password" class="form-control" placeholder="" name="newpassword" required>
-                                        <small id="textHelp" class="form-text text-muted">Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Re-enter New Password</label>
-                                        <input type="password" class="form-control" placeholder="" name="newpassword2" required>
-                                    </div>
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn btn-info" name="submit_cp">Submit</button>
-                                        <button type="reset" class="btn btn-dark">Reset</button>
-                                    </div>
-                                </form>
-                                <?php if (isset($_GET['success'])) { ?>
-                                    <div class="mt-3 alert alert-success alert-dismissible border-0 fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        <strong>Success Changed the password</strong>
-                                    </div>
-                                <?php }
-                                if (isset($_GET['failed'])) { ?>
-                                    <div class="mt-3 alert alert-danger alert-dismissible border-0 fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        <strong>Failed to Change the password</strong>
+                                <?php if ($_SESSION['role'] == 'admin') { ?>
+                                    <div class="btn-group float-right">
+                                        <div class="float-right">
+                                            <a href="adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Add New User</a>
+                                        </div>
                                     </div>
                                 <?php } ?>
+                                <hr class="mt-5">
+                                <div class="table-responsive">
+                                    <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <?php if ($_SESSION['role'] == 'superadmin') { ?>
+                                                    <th style="width: 150px;">Actions</th>
+                                                <?php } ?>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+
+                                            $sql = mysqli_query($conn, "SELECT * FROM users WHERE `role` <> 'admin' AND `role` <> 'admin' AND is_approved <> 1");
+
+                                            while ($data = mysqli_fetch_array($sql)) {
+                                            ?>
+
+                                                <tr>
+                                                    <td><?= $data[1]; ?></td>
+                                                    <td><?= $data[2]; ?></td>
+                                                    <td><?= $data[4]; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($data[6] == 1) {
+                                                            echo "<i class='fas fa-circle text-success font-10 mr-2'></i>Active";
+                                                        } elseif ($data[6] == 2) {
+                                                            echo "<i class='fas fa-circle text-warning font-10 mr-2'></i>Locked";
+                                                        } else {
+                                                            echo "<i class='fas fa-circle text-danger font-10 mr-2'></i>Disabled";
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <?php if ($_SESSION['role'] == 'superadmin') { ?>
+                                                        <td>
+                                                            <a href="functions/superadmin.php?approve=<?= $data[0] ?>" class="bg-light p-2 mr-2">
+                                                                <i class="fas fa-check text-primary font-12 mr-1"></i>Approve
+                                                            </a>
+                                                            <a href="functions/superadmin.php?reject=<?= $data[0] ?>" class="bg-light p-2">
+                                                                <i class="fas fa-window-close text-primary font-12 mr-1"></i>Reject
+                                                            </a>
+                                                        </td>
+                                                    <?php } ?>
+                                                </tr>
+                                            <?php } ?>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <?php if ($_SESSION['role'] == 'superadmin') { ?>
+                                                    <th>Actions</th>
+                                                <?php } ?>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,6 +196,12 @@ if (!isset($_SESSION['login']) > 0) {
 
     <!-- Data Table -->
     <?php include "../partials/script.php" ?>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+    <script src="../src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
 ?>
@@ -11,7 +11,7 @@ if (!isset($_SESSION['id']) > 0) {
 <html lang="en">
 
 <head>
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Edit Dokumen</title>
 </head>
 
@@ -33,7 +33,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -41,7 +41,7 @@ if (!isset($_SESSION['id']) > 0) {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'y' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -94,7 +94,7 @@ if (!isset($_SESSION['id']) > 0) {
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Edit Dokumen</h4>
+                                <h4 class="card-title">Perbarui Dokumen</h4>
                                 <hr>
                                 <?php
                                 $id = $_GET["id"];
@@ -112,14 +112,14 @@ if (!isset($_SESSION['id']) > 0) {
                                             <div class="form-group">
                                                 <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Jenis Perjanjian</label>
                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="jenis_perjanjian" required>
-                                                    <option disabled selected value>...</option>
-                                                    <option value="Safekeeping">Safekeeping</option>
-                                                    <option value="KPD (Kontrak Pengelolaan Dana)">KPD (Kontrak Pengelolaan Dana)</option>
-                                                    <option value="Reksadana">Reksadana</option>
-                                                    <option value="EBA (Efek Beragun Aset)">EBA (Efek Beragun Aset)</option>
-                                                    <option value="Ops memo">Ops memo</option>
-                                                    <option value="Selling Agent">Selling Agent</option>
-                                                    <option value="SLA (Service Level Agreement)">SLA (Service Level Agreement)</option>
+                                                    <!-- <option disabled selected value>...</option> -->
+                                                    <option value="Safekeeping" <?= ($row[4] == 'Safekeeping') ? 'selected' : ''  ?>>Safekeeping</option>
+                                                    <option value="KPD (Kontrak Pengelolaan Dana)" <?= ($row[4] == 'KPD (Kontrak Pengelolaan Dana)') ? 'selected' : ''  ?>>KPD (Kontrak Pengelolaan Dana)</option>
+                                                    <option value="Reksadana" <?= ($row[4] == 'Reksadana') ? 'selected' : ''  ?>>Reksadana</option>
+                                                    <option value="EBA (Efek Beragun Aset)" <?= ($row[4] == 'EBA (Efek Beragun Aset)') ? 'selected' : ''  ?>>EBA (Efek Beragun Aset)</option>
+                                                    <option value="Ops memo" <?= ($row[4] == 'Ops memo') ? 'selected' : ''  ?>>Ops memo</option>
+                                                    <option value="Selling Agent" <?= ($row[4] == 'Selling Agent') ? 'selected' : ''  ?>>Selling Agent</option>
+                                                    <option value="SLA (Service Level Agreement)" <?= ($row[4] == 'SLA (Service Level Agreement)') ? 'selected' : ''  ?>>SLA (Service Level Agreement)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -167,11 +167,11 @@ if (!isset($_SESSION['id']) > 0) {
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Checker/Signer</label>
+                                                <label class="mr-sm-2" for="inlineFormCustomSelect">Pilih Approver</label>
                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="approver" required>
                                                     <option disabled selected value>Choose..</option>
                                                     <?php
-                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'CS'");
+                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'Approver'");
                                                     while ($user = mysqli_fetch_array($users)) {
                                                     ?>
 
@@ -236,9 +236,7 @@ if (!isset($_SESSION['id']) > 0) {
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
-
-
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
 </body>
 
 </html>

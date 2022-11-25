@@ -4,7 +4,6 @@ include '../../function.php';
 session_start();
 
 $nama_dokumen = $_POST['nama_dokumen'];
-// $dokumen = $_POST['dokumen'];
 $nasabah = $_POST['nasabah'];
 $jenis_perjanjian = $_POST['jenis_perjanjian'];
 $nomor_perjanjian = $_POST['nomor_perjanjian'];
@@ -23,17 +22,6 @@ if ($datenow >= $batas_review && $datenow < $tanggal_berakhir) {
     $status = 'Berlaku';
 }
 
-// echo $nama_dokumen = $_POST['nama_dokumen'];
-// echo $dokumen = $_POST['dokumen'];
-// echo $nasabah = $_POST['nasabah'];
-// echo $jenis_perjanjian = $_POST['jenis_perjanjian'];
-// echo $nomor_perjanjian = $_POST['nomor_perjanjian'];
-// echo $nomor_perjanjian_terkait = $_POST['nomor_perjanjian_terkait'];
-// echo $tanggal_perjanjian = $_POST['tanggal_perjanjian'];
-// echo $tanggal_berakhir = $_POST['tanggal_berakhir'];
-// echo $approver = $_POST['approver'];
-// echo $status;
-
 // dokumen upload
 
 $random_number = round(microtime(true));
@@ -41,6 +29,8 @@ $file_name = $_FILES['dokumen']['name'];
 $format = $_FILES['dokumen']['type'];
 $file_tmp = $_FILES['dokumen']['tmp_name'];
 $new_file_name = $random_number . '_' . $file_name;
+
+// membuat id dokumen
 
 $select_id = mysqli_query($conn, "SELECT COUNT(*) AS idTerbesar FROM docs");
 
@@ -82,17 +72,8 @@ if ($format == "application/pdf") {
             ");
 
     echo "<script>alert('Berhasil....!!!');
-    location.href='../docs';</script>";
+    location.href='../';</script>";
 } else {
     echo "<script>alert('Maaf format file hanya bisa PDF');
     location.href='../upload.php';</script>";
 }
-
-
-
-
-    // if ($sql) {
-    //     echo true;
-    // } else {
-    //     echo false;
-    // }

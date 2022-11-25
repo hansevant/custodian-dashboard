@@ -2,10 +2,10 @@
 session_start();
 require('../function.php');
 header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['id']) > 0) {
+if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
-if ($_SESSION['role'] != 'admin') {
+if ($_SESSION['role'] != 'admin' && $_SESSION['role'] != 'superadmin') {
     echo "<script>location.href='index.php'</script>";
 }
 ?>
@@ -16,7 +16,7 @@ if ($_SESSION['role'] != 'admin') {
 <head>
     <!-- This page plugin datatables CSS -->
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <?php include "partials/head.php"; ?>
+    <?php include "../partials/head.php"; ?>
     <title>Account Management</title>
 </head>
 
@@ -38,7 +38,7 @@ if ($_SESSION['role'] != 'admin') {
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
-        <?php include "partials/navbar.php" ?>
+        <?php include "../partials/navbar.php" ?>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
         <!-- ============================================================== -->
@@ -46,7 +46,7 @@ if ($_SESSION['role'] != 'admin') {
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <?php $active = 'a' ?>
-        <?php include "partials/sidebar.php" ?>
+        <?php include "../partials/sidebar.php" ?>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -78,14 +78,15 @@ if ($_SESSION['role'] != 'admin') {
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title float-left">Management Account</h4>
+                                <h4 class="card-title float-left">User Management</h4>
 
-                                <div class="btn-group float-right">
-                                    <div class="float-right">
-                                        <a href="adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Add New User</a>
+                                <?php if ($_SESSION['role'] == 'admin') { ?>
+                                    <div class="btn-group float-right">
+                                        <div class="float-right">
+                                            <a href="adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Add New User</a>
+                                        </div>
                                     </div>
-                                </div>
-
+                                <?php } ?>
                                 <hr class="mt-5">
                                 <div class="table-responsive">
                                     <table style="font-size: 14px;" id="myTable" class="table table-striped table-bordered no-wrap">
@@ -94,13 +95,16 @@ if ($_SESSION['role'] != 'admin') {
                                                 <th>Name</th>
                                                 <th>Username</th>
                                                 <th>Role</th>
-                                                <th style="width: 120px;">Actions</th>
+                                                <th>Status</th>
+                                                <?php if ($_SESSION['role'] == 'admin') { ?>
+                                                    <th style="width: 50px;">Actions</th>
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
 
-                                            $sql = mysqli_query($conn, "SELECT * FROM users WHERE `role` <> 'admin'");
+                                            $sql = mysqli_query($conn, "SELECT * FROM users WHERE is_approved = 1 AND `role` <> 'admin' AND `role` <> 'superadmin'");
 
                                             while ($data = mysqli_fetch_array($sql)) {
                                             ?>
@@ -110,11 +114,24 @@ if ($_SESSION['role'] != 'admin') {
                                                     <td><?= $data[2]; ?></td>
                                                     <td><?= $data[4]; ?></td>
                                                     <td>
-                                                        <a href="functions/resetPassword.php?id=<?= $data[0] ?>" class="btn btn-warning btn-sm btn-rounded <?= ($data[5] == 0) ? '' : 'disabled'; ?>">Reset Password</a>
-                                                        <a href="edituser.php?id=<?= $data[0] ?>" class="btn btn-purple btn-sm btn-rounded">Edit</a>
+                                                        <?php
+                                                        if ($data[6] == 1) {
+                                                            echo "<i class='fas fa-circle text-success font-10 mr-2'></i>Active";
+                                                        } elseif ($data[6] == 2) {
+                                                            echo "<i class='fas fa-circle text-warning font-10 mr-2'></i>Locked";
+                                                        } else {
+                                                            echo "<i class='fas fa-circle text-danger font-10 mr-2'></i>Disabled";
+                                                        }
+                                                        ?>
                                                     </td>
+                                                    <?php if ($_SESSION['role'] == 'admin') { ?>
+                                                        <td>
+                                                            <i class="fas fa-pencil-alt text-primary font-12 mr-1"></i>
+                                                            <a href="edituser.php?id=<?= $data[0] ?>">Edit
+                                                            </a>
+                                                        </td>
+                                                    <?php } ?>
                                                 </tr>
-
                                             <?php } ?>
                                         </tbody>
                                         <tfoot>
@@ -122,7 +139,10 @@ if ($_SESSION['role'] != 'admin') {
                                                 <th>Name</th>
                                                 <th>Username</th>
                                                 <th>Role</th>
-                                                <th>Actions</th>
+                                                <th>Status</th>
+                                                <?php if ($_SESSION['role'] == 'admin') { ?>
+                                                    <th>Actions</th>
+                                                <?php } ?>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -171,14 +191,13 @@ if ($_SESSION['role'] != 'admin') {
     <!-- ============================================================== -->
 
     <!-- Data Table -->
-    <?php include "partials/script.php" ?>
+    <?php include "../partials/script.php" ?>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         });
     </script>
     <script src="../src/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="../src/dist/js/pages/datatable/datatable-basic.init.js"></script> -->
 </body>
 
 </html>
