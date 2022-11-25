@@ -79,7 +79,10 @@ if (!isset($_SESSION['login']) > 0) {
                         <div class="card">
                             <div class="card-body">
 
-                                <h4 class="card-title">Change Password</h4>
+                                <h4 class="card-title d-inline">Change Password</h4>
+                                <?php if ($row[5] == 1) { ?>
+                                    <small class="text-danger">Please update your password first!</small>
+                                <?php } ?>
                                 <hr>
                                 <form action="functions/account.php" method="POST">
                                     <input type="hidden" name="id" value="<?= $row[0]; ?>">
@@ -90,7 +93,7 @@ if (!isset($_SESSION['login']) > 0) {
                                     <div class="form-group">
                                         <label>New Password</label>
                                         <input type="password" class="form-control" placeholder="" name="newpassword" required>
-                                        <small id="textHelp" class="form-text text-muted">Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.</small>
+                                        <small id="textHelp" class="form-text text-muted">Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character. <br> For Example : <b>Kustodian100!</b> </small>
                                     </div>
                                     <div class="form-group">
                                         <label>Re-enter New Password</label>

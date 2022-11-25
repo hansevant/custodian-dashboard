@@ -51,7 +51,7 @@ if (isset($_POST["login"])) {
         echo "<script> alert('Login failed. Your Account has been deactivated by admin.')
         location.href='index.php'</script>";
     } elseif ($status == 2) {
-        echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin3.')
+        echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin.')
         location.href='index.php'</script>";
     } else {
         // cek apakah kredensial yang disubmit sesuai tidak 
@@ -60,11 +60,16 @@ if (isset($_POST["login"])) {
             $_SESSION['role'] = $row2['role'];
             $_SESSION['id'] = $row2['id'];
             $_SESSION['name'] = $row2['name'];
+            $resetpass = $row2['reset_pass'];
             // reset login time ke 0
             mysqli_query($conn, "UPDATE users SET login_time = 0 where username = '$username' ");
             if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'superadmin') {
                 echo "<script> alert('Login successful')
             location.href='dashboard/accounts.php'</script>";
+                exit;
+            } elseif ($resetpass == 1) {
+                echo "<script> alert('Login successful')
+            location.href='dashboard/account.php'</script>";
                 exit;
             } else {
                 echo "<script> alert('Login successful')
@@ -72,10 +77,7 @@ if (isset($_POST["login"])) {
                 exit;
             }
         } else {
-            // $check3 = mysqli_fetch_array($sql2);
             $logintimes = $row2['login_time'];
-            // echo $logintimes;
-            // die;
             if ($role == 'admin') {
                 echo "<script> alert('Login failed. Invalid password.')
                 location.href='index.php'</script>";
@@ -84,12 +86,9 @@ if (isset($_POST["login"])) {
             if ($logintimes > 2) {
                 $sql4 = "UPDATE users SET `status` = 2 where username = '$username'";
                 mysqli_query($conn, $sql4);
-                echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin2.')</script>";
+                echo "<script> alert('Sorry Your Account has been locked after failed to login for a few times, please contact the admin.')</script>";
             } elseif ($logintimes < 3) {
                 $trylogin = mysqli_query($conn, "UPDATE users SET login_time = login_time + 1 where username = '$username' ");
-                // $sql5 = mysqli_query($conn, "SELECT login_time FROM users WHERE username = '$username'");
-                // $check = mysqli_fetch_array($sql5);
-                // $logintime = $check['login_time'];
                 echo "<script> alert('Login failed. Invalid username or password.')
                 location.href='index.php?f=true'</script>";
             }

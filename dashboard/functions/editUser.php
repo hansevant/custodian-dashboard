@@ -39,7 +39,7 @@ if (isset($_GET["resetpass"])) {
 
     $id = $_GET["resetpass"];
 
-    $resetpass = password_hash('custodithebest', PASSWORD_DEFAULT);
+    $resetpass = password_hash('memberimaknaindonesia', PASSWORD_DEFAULT);
     $sql = mysqli_query($conn, "UPDATE users SET `password` = '$resetpass', reset_pass = 1, `status` = 1 , `login_time` = 0 WHERE id = '$id'");
     echo "<script>alert('successfully reset the password');
     location.href='../edituser.php?id=$id'</script>";

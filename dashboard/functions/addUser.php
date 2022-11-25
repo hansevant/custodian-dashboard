@@ -8,7 +8,7 @@ if ($_SESSION['role'] != 'admin') {
 $name = $_POST['name'];
 $username = $_POST['username'];
 $role = $_POST['role'];
-$password = password_hash('custodian2023', PASSWORD_DEFAULT);
+$password = password_hash('memberimaknaindonesia', PASSWORD_DEFAULT);
 
 $check = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users WHERE username ='$username'"));
 if ($check > 0) {

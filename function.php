@@ -10,16 +10,8 @@ $conn = mysqli_connect($server, $username, $pw, $db);
 $sql = mysqli_query($conn, "SELECT * FROM docs");
 
 $datenow = gmdate("Y-m-d", time());
-// echo $datenow . '<br><br>';
 
 $data = mysqli_fetch_row($sql);
-// if ($datenow < $data[8]) {
-//     // echo 'berlaku' . '<br>';
-//     $query = mysqli_query($conn, "UPDATE docs set `status` = 'berlaku' WHERE tanggal_berakhir ");
-// } else {
-//     // echo 'tidak berlaku' . '<br>';
-//     $query = mysqli_query($conn, "UPDATE docs set `status` = 'tidak berlaku' ");
-// }
 
 while ($data = mysqli_fetch_row($sql)) {
     //     // if ($datenow > $data[8]) {
@@ -30,19 +22,3 @@ while ($data = mysqli_fetch_row($sql)) {
     $query = mysqli_query($conn, "UPDATE docs set `status` = 'Tidak Berlaku' where tanggal_berakhir <= '$datenow' || tanggal_perjanjian > '$datenow'");
     //     // } else if ($datenow < $data[8]) {
 }
-
-//     // $now = gmdate("Y-m-d", time());
-//     // $remaining = strtotime($data[8]) - time();
-//     // $days_remaining = floor($remaining / 86400);
-//     // $hours_remaining = floor(($remaining % 86400) / 3600);
-
-//     // echo 'status : ' . $data[10] . '<br>';
-//     // if ($now >= $data[9] && $now < $data[8]) {
-//     //     echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
-//     // }
-//     // echo 'batas review : ' . $data[9] . '<br>';
-//     // echo 'tgl berakhir : ' . $data[8] . '<br>';
-//     // echo 'tgl perjanjian : ' . $data[7] . '<br>';
-
-//     // echo '<br>';
-// }

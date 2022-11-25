@@ -2,24 +2,15 @@
 
 include '../../function.php';
 session_start();
-// blm tentu dipake
-// if (isset($_GET['id'])) {
-//     $id = $_GET['id'];
-//     $resetpass = password_hash('custodithebest', PASSWORD_DEFAULT);
-//     $sql = mysqli_query($conn, "UPDATE users SET `password` = '$resetpass', reset_pass = 1 WHERE id = '$id'");
 
-//     echo "<script>
-// alert('Berhasil mereset passwordnya');
-// location.href='../accounts.php'
-// </script>";
-// }
-
+// fungsi logout
 if (isset($_GET['logout'])) {
     session_destroy();
     echo "<script>alert('Bye bye'); 
                 location.href='../' </script>";
 }
 
+// fungsi ganti password
 if (isset($_POST['submit_cp'])) {
 
     $oldpass    =  mysqli_real_escape_string($conn, $_POST['oldpassword']);

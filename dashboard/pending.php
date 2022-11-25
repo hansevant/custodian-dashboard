@@ -95,7 +95,6 @@ if (!isset($_SESSION['login']) > 0) {
                                         <tbody>
                                             <?php
                                             if ($_SESSION['role'] == 'Maker') {
-
                                                 $sql = mysqli_query($conn, "SELECT docs.id_dokumen, docs.nama_dokumen, docs.nasabah, docs.jenis_perjanjian, users.name FROM docs INNER JOIN users ON docs.approver = users.id where docs.is_approved = 0");
                                             } else {
                                                 $sql = mysqli_query($conn, "SELECT docs.id_dokumen, docs.nama_dokumen, docs.nasabah, docs.jenis_perjanjian FROM docs where is_approved = 0 AND approver = '$_SESSION[id]'");
