@@ -61,16 +61,15 @@ if ($_FILES['dokumen']['error'] === 4) {
                 3)
                 ");
 
-        echo "<script>alert('Berhasil 2....!!!');
+        echo "<script>alert('Berhasil memperbarui dokumen');
         location.href='../docs.php';</script>";
     } else {
         echo "<script>alert('Maaf format file hanya bisa PDF');
-        location.href='../upload.php';</script>";
+        location.href='../docs.php';</script>";
     }
 } else {
     if ($format == "application/pdf") {
         @move_uploaded_file($file_tmp, "../docs/" . $new_file_name);
-
 
         $sql = mysqli_query($conn, "UPDATE `docs` SET 
         nama_dokumen = '$nama_dokumen',
@@ -96,10 +95,10 @@ if ($_FILES['dokumen']['error'] === 4) {
                 3)
                 ");
 
-        echo "<script>alert('Berhasil 1....!!!');
+        echo "<script>alert('Berhasil memperbarui dokumen');
         location.href='../docs.php';</script>";
     } else {
-        // echo "<script>alert('Maaf format file hanya bisa PDF');
-        // location.href='../upload.php';</script>";
+        echo "<script>alert('Maaf format file hanya bisa PDF');
+        location.href='../docs.php';</script>";
     }
 }

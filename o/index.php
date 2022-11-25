@@ -11,6 +11,8 @@ $db = "cutodi";
 
 $conn = mysqli_connect($server, $username, $pw, $db);
 echo password_hash('superadmin', PASSWORD_DEFAULT);
+echo ' -superadmin admin-  ';
+echo password_hash('admin', PASSWORD_DEFAULT);
 
 // if (password_verify('custodian2023', '$2y$10$LbgGhhiPJ4A0Xs3CjcyiPOu936Exl55y9iI0Ibdhg/94TGgCLylI6')) {
 //     echo 'Password is valid!';

@@ -6,7 +6,7 @@ session_start();
 // fungsi logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    echo "<script>alert('Bye bye'); 
+    echo "<script>alert('Bye, See u again :)'); 
                 location.href='../' </script>";
 }
 

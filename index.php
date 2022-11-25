@@ -78,7 +78,7 @@ if (isset($_POST["login"])) {
             }
         } else {
             $logintimes = $row2['login_time'];
-            if ($role == 'admin') {
+            if ($role == 'admin' || $role == 'superadmin') {
                 echo "<script> alert('Login failed. Invalid password.')
                 location.href='index.php'</script>";
                 exit;

@@ -166,7 +166,7 @@ if (!isset($_SESSION['login']) > 0) {
                                                 <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="approver" required>
                                                     <option disabled selected value>Choose..</option>
                                                     <?php
-                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'Approver'");
+                                                    $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'Approver' AND is_approved = 1");
                                                     while ($user = mysqli_fetch_array($users)) {
                                                     ?>
 
@@ -187,7 +187,7 @@ if (!isset($_SESSION['login']) > 0) {
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <embed src="partials/pdf.pdf" height="400" id="preview">
+                                <embed src="../partials/pdf.pdf" height="400" id="preview">
                             </div>
                         </div>
                     </div>

@@ -71,7 +71,7 @@ if (!isset($_SESSION['login']) > 0) {
                 $sql = mysqli_query($conn, "SELECT * FROM docs WHERE id_dokumen = '$id_dokumen'");
                 $sql2 = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen' ORDER BY created_at DESC LIMIT 4 ");
                 $sql2y = mysqli_query($conn, "SELECT * FROM activities WHERE id_dokumen = '$id_dokumen' ORDER BY created_at DESC");
-                $sql3 = mysqli_query($conn, "SELECT comments.id_comment, comments.id_user, comments.comment, comments.created_at, users.name FROM comments inner join users on comments.id_user=users.id WHERE id_dokumen = '$id_dokumen'");
+                $sql3 = mysqli_query($conn, "SELECT comments.id_comment, comments.id_user, comments.comment, comments.created_at, users.name, users.role FROM comments inner join users on comments.id_user=users.id WHERE id_dokumen = '$id_dokumen'");
                 // $sql4 = mysqli_query($conn, "SELECT * FROM users inner join comments on users.id=comments.id_user ");
 
                 $doc = mysqli_fetch_array($sql);
@@ -94,13 +94,13 @@ if (!isset($_SESSION['login']) > 0) {
                 if ($_SESSION['role'] == 'Approver' && $doc[12] == 0) {
                 ?>
                     <div class="float-right">
-                        <a href="functions/Approver.php?approve=<?= $doc[0] ?>" class="btn btn-success">
+                        <a href="functions/Approver.php?approve=<?= $doc[0] ?>" data-toggle="tooltip" title="Approve" class="btn btn-success">
                             <i class="fas fa-check"></i>
                         </a>
-                        <a href="functions/Approver.php?reject=<?= $doc[0] ?>" class="btn btn-warning">
+                        <a href="functions/Approver.php?reject=<?= $doc[0] ?>" data-toggle="tooltip" title="Reject" class="btn btn-warning">
                             <i class="fas fa-times"></i>
                         </a>
-                        <a href="functions/Approver.php?cancel=<?= $doc[0] ?>" class="btn btn-danger">
+                        <a href="functions/Approver.php?cancel=<?= $doc[0] ?>" data-toggle="tooltip" title="Cancel" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -129,7 +129,7 @@ if (!isset($_SESSION['login']) > 0) {
 
                                         while ($comment = mysqli_fetch_array($sql3)) {
                                         ?>
-                                            <h5 class="font-weight-medium" style="margin-bottom: 5px;"><?= $comment['name']; ?></h5>
+                                            <h5 class="font-weight-medium" style="margin-bottom: 5px;"><?= $comment['name']; ?> <small>- <?= $comment['role']; ?></small></h5>
                                             <?php
                                             if ($_SESSION['id'] == $comment['id_user']) {
                                             ?>

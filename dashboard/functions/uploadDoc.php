@@ -46,7 +46,6 @@ if ($select_id == FALSE) {
 if ($format == "application/pdf") {
     @move_uploaded_file($file_tmp, "../docs/" . $new_file_name);
 
-
     $sql = mysqli_query($conn, "INSERT INTO `docs` (id_dokumen, nama_dokumen, dokumen, nasabah, jenis_perjanjian, nomor_perjanjian, nomor_perjanjian_terkait, tanggal_perjanjian, tanggal_berakhir, batas_review,`status`, approver) 
     VALUES ('$id_doc',
             '$nama_dokumen',
@@ -71,7 +70,7 @@ if ($format == "application/pdf") {
             2)
             ");
 
-    echo "<script>alert('Berhasil....!!!');
+    echo "<script>alert('Berhasil menambah dokumen');
     location.href='../';</script>";
 } else {
     echo "<script>alert('Maaf format file hanya bisa PDF');
