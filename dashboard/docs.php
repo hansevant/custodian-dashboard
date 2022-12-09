@@ -15,7 +15,7 @@ if (!isset($_SESSION['login']) > 0) {
     <link href="../src/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <link href="../src/assets/extra-libs/datatables.net/css/buttons.dataTables.min.css" rel="stylesheet">
     <?php include "../partials/head.php"; ?>
-    <title>Dokumen</title>
+    <title>Documents</title>
     <style>
         .dt-button.red {
             color: red;
@@ -319,7 +319,7 @@ if (!isset($_SESSION['login']) > 0) {
                                                     <td style="width:150px"><?= $tb; ?></td>
                                                     <td style="white-space: nowrap;">
                                                         <?php
-                                                        if ($data[10] == 'masa review') {
+                                                        if ($data[10] == 'Masa Review') {
                                                             echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
                                                         } else {
                                                             echo '-';

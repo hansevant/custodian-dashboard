@@ -12,7 +12,7 @@ if (!isset($_SESSION['login']) > 0) {
 
 <head>
     <?php include "../partials/head.php"; ?>
-    <title>Edit Dokumen</title>
+    <title>Edit Document</title>
 </head>
 
 <body>

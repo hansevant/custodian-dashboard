@@ -8,8 +8,6 @@ if ($_SESSION['role'] != 'admin') {
 
 if (isset($_POST["editrole"])) {
     $id = $_POST['id'];
-    // $username = $_POST['username'];
-    // $oldusername = $_POST['oldusername'];
     $role = $_POST['role'];
 
     $sql = mysqli_query($conn, "UPDATE users SET `role` = '$role', is_approved = 2 WHERE id = '$id'");

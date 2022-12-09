@@ -169,7 +169,6 @@ if (!isset($_SESSION['login']) > 0) {
                                                     $users = mysqli_query($conn, "SELECT * FROM users WHERE role = 'Approver' AND is_approved = 1");
                                                     while ($user = mysqli_fetch_array($users)) {
                                                     ?>
-
                                                         <option value="<?= $user['id']; ?>"><?= $user['name'] ?></option>
                                                     <?php
                                                     }

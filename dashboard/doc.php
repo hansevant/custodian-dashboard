@@ -179,9 +179,9 @@ if (!isset($_SESSION['login']) > 0) {
                                             <?php
                                             if ($now >= $doc[9] && $now < $doc[8]) {
                                                 if ($days_remaining > 0) {
-                                                    echo "sisa waktu : $days_remaining hari dan $hours_remaining jam lagi<br>";
+                                                    echo "$days_remaining hari dan $hours_remaining jam lagi<br>";
                                                 } else {
-                                                    echo "sisa waktu : $hours_remaining jam lagi<br>";
+                                                    echo "$hours_remaining jam lagi<br>";
                                                 }
                                             } else {
                                                 echo '-';

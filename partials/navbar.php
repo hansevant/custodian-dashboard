@@ -44,7 +44,7 @@
                 <!-- create new -->
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
-                    <p class="ml-3 mt-4">Hi <?= $_SESSION['name'];; ?>, Have a nice day!🌈 </p>
+                    <p class="ml-3 mt-4">Hi <?= $_SESSION['name'];; ?>, Have a nice day! </p>
                 </li>
             </ul>
             <!-- ============================================================== -->

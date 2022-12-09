@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html dir="ltr">
-
 <?php
 session_start();
 $server = "localhost";
