@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr">
+
 <?php
 session_start();
 $server = "localhost";
@@ -106,6 +107,9 @@ if (isset($_POST["login"])) {
 </head>
 
 <body>
+    <div class="app-name">
+        BRI<span>MOST</span>
+    </div>
     <div class="center">
         <img src="src/assets/img/logo.png" alt="">
         <h1>Please Login</h1>

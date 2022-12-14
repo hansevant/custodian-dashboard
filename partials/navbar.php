@@ -19,9 +19,10 @@
                     <!-- Logo text -->
                     <span class="logo-text">
                         <!-- dark Logo text -->
-                        <img src="../partials/logo-text.png" height="45" alt="homepage" class="dark-logo" />
+                        <img src="../partials/new-text.png" height="30" alt="homepage" class="dark-logo" />
+                        <!-- BRIMOST -->
                         <!-- Light Logo text -->
-                        <img src="../partials/logo-text.png" height="45" class="light-logo" alt="homepage" />
+                        <img src="../partials/new-text.png" height="30" class="light-logo" alt="homepage" />
                     </span>
                 </a>
             </div>

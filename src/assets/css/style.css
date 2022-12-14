@@ -19,6 +19,20 @@ body{
     backdrop-filter: blur(2px);
 }
 
+.app-name{
+    position: absolute;
+    top: 0%;
+    right:0%;
+    transform: translate(-40%, 100%);
+    font-size: 36px;
+    color: #04549c;
+    font-family: 'myFirstFont', sans-serif;
+}
+
+.app-name span{
+    color: #e47a38;
+}
+
 .center{
     position: absolute;
     top: 50%;
@@ -74,6 +88,7 @@ form .txt_field{
     font-size: 16px;
     pointer-events: none;
     transition: .5s;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .txt_field span::before{
