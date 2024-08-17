@@ -3,10 +3,10 @@
 
 <?php
 session_start();
-$server = "localhost";
+$server = "127.0.0.1";
 $username = "root";
 $pw = "";
-$db = "cutodi";
+$db = "db_brimost";
 
 error_reporting(0);
 

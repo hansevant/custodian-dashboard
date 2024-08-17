@@ -1,10 +1,13 @@
 <?php
-session_start();
-require('../function.php');
-header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['login']) > 0) {
-    echo "<script>location.href='../'</script>";
-}
+    session_start();
+    require('../function.php');
+    header("X-XSS-Protection: 1; mode=block");
+    if (!isset($_SESSION['login']) > 0) {
+        echo "<script>location.href='../'</script>";
+    }
+
+    $sql_departemen = "SELECT id, name FROM departements";
+    $result_departemen = $conn->query($sql_departemen);
 ?>
 
 <!DOCTYPE html>
@@ -100,6 +103,32 @@ if (!isset($_SESSION['login']) > 0) {
                                     <div class="form-group">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Nama Dokumen <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" autofocus name="nama_dokumen" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="mr-sm-2" for="departemen">Departemen<span class="text-danger">*</span></label>
+                                                <select class="custom-select mr-sm-2" id="departemen" name="departemen" required>
+                                                    <option disabled selected value>Pilih Departemen...</option>
+                                                    <?php
+                                                        // Loop untuk menampilkan opsi dropdown departemen
+                                                        if ($result_departemen->num_rows > 0) {
+                                                            while($row_departemen = $result_departemen->fetch_assoc()) {
+                                                                echo "<option value='" . $row_departemen['id'] . "'>" . $row_departemen['name'] . "</option>";
+                                                            }
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                        <div class="form-group">
+                                                <label class="mr-sm-2" for="team">Tim <span class="text-danger">*</span></label>
+                                                <select class="custom-select mr-sm-2" id="team" name="team" required>
+                                                    <option disabled selected value>Pilih Tim...</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -230,7 +259,28 @@ if (!isset($_SESSION['login']) > 0) {
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+    <script>
+        document.getElementById('departemen').addEventListener('change', function() {
+            var departemenID = this.value;
+            var timDropdown = document.getElementById('team');
+            timDropdown.innerHTML = '<option value="">--Pilih Tim--</option>'; // Reset dropdown tim
 
+            if(departemenID) {
+                // Buat objek XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'functions/fetchTeam.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        timDropdown.innerHTML = xhr.responseText; // Masukkan hasil ke dropdown tim
+                    }
+                };
+
+                xhr.send('departemen_id=' + departemenID);
+            }
+        });
+    </script>
 
     <?php include "../partials/script.php" ?>
 </body>

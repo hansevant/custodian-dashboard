@@ -19,7 +19,7 @@ if (isset($_GET["approve"])) {
             '$comment',
             1)
             ");
-    echo "<script>alert('Dokumen telah diapprove');location.href='../docs.php'</script>";
+    echo "<script>alert('Dokumen telah diapprove');location.href='../pending.php'</script>";
 }
 
 if (isset($_GET["reject"])) {

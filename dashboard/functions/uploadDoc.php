@@ -4,6 +4,8 @@ include '../../function.php';
 session_start();
 
 $nama_dokumen = $_POST['nama_dokumen'];
+$departemen = $_POST['departemen'];
+$team = $_POST['team'];
 $nasabah = $_POST['nasabah'];
 $jenis_perjanjian = $_POST['jenis_perjanjian'];
 $nomor_perjanjian = $_POST['nomor_perjanjian'];
@@ -44,13 +46,13 @@ if ($select_id == FALSE) {
 }
 
 if ($format == "application/pdf") {
-    @move_uploaded_file($file_tmp, "../docs/" . $new_file_name);
-
-    $sql = mysqli_query($conn, "INSERT INTO `docs` (id_dokumen, nama_dokumen, dokumen, nasabah, jenis_perjanjian, nomor_perjanjian, nomor_perjanjian_terkait, tanggal_perjanjian, tanggal_berakhir, batas_review,`status`, approver) 
+    $sql = mysqli_query($conn, "INSERT INTO `docs` (id_dokumen, nama_dokumen, dokumen, nasabah,departemen_id,team_id, jenis_perjanjian, nomor_perjanjian, nomor_perjanjian_terkait, tanggal_perjanjian, tanggal_berakhir, batas_review,`status`, approver) 
     VALUES ('$id_doc',
             '$nama_dokumen',
             '$new_file_name',
             '$nasabah',
+            '$departemen',
+            '$team',
             '$jenis_perjanjian',
             '$nomor_perjanjian', 
             '$nomor_perjanjian_terkait',
@@ -69,6 +71,9 @@ if ($format == "application/pdf") {
             '$comment',
             2)
             ");
+
+
+    @move_uploaded_file($file_tmp, "../docs/" . $new_file_name);
 
     echo "<script>alert('Berhasil menambah dokumen');
     location.href='../';</script>";

@@ -5,6 +5,9 @@ header("X-XSS-Protection: 1; mode=block");
 if (!isset($_SESSION['login']) > 0) {
     echo "<script>location.href='../'</script>";
 }
+
+$sql_tim = "SELECT id, name FROM teams WHERE departemen_id = 1";
+$result_tim = $conn->query($sql_tim);
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +93,7 @@ if (!isset($_SESSION['login']) > 0) {
                         <div class="card">
                             <div class="card-body">
                                 <div class="btn-group float-left">
-                                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Documents</h3>
+                                    <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">DPLK Documents</h3>
                                 </div>
 
                                 <!-- <h4 class="card-title float-left">Custodian Documents</h4> -->
@@ -133,16 +136,6 @@ if (!isset($_SESSION['login']) > 0) {
                                                                     <input type="checkbox" class="custom-control-input" name="type[]" value="'Selling Agent'" id="customCheck4">
                                                                     <label class="custom-control-label" for="customCheck4">Selling Agent</label>
                                                                 </div>
-                                                                <!-- <label><input type="checkbox" name="type[]" value="'Selling Agent'">Selling Agent</label><br>
-                                                                <label><input type="checkbox" name="type[]" value="'Reksadana'">Reksadana</label><br> -->
-                                                                <!-- <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
-                                                                <label><input type="checkbox" name="type[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br> -->
-                                                            </td>
-                                                            <td valign="top" style="padding-left: 8px;">
-                                                                <!-- <label><input type="checkbox" name="type[]" value="'Selling Agent'">Selling Agent</label><br>
-                                                                <label><input type="checkbox" name="type[]" value="'Reksadana'">Reksadana</label><br>
-                                                                <label><input type="checkbox" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'">KPD (Kontrak Pengelolaan Dana)</label><br>
-                                                                <label><input type="checkbox" name="type[]" value="'SLA (Service Level Agreement)'">SLA (Service Level Agreement)</label><br> -->
                                                                 <div class="custom-control custom-checkbox">
                                                                     <input type="checkbox" class="custom-control-input" name="type[]" value="'EBA (Efek Beragun Aset)'" id="customCheck5">
                                                                     <label class="custom-control-label" for="customCheck5">EBA (Efek Beragun Aset)</label>
@@ -155,6 +148,27 @@ if (!isset($_SESSION['login']) > 0) {
                                                                     <input type="checkbox" class="custom-control-input" name="type[]" value="'KPD (Kontrak Pengelolaan Dana)'" id="customCheck7">
                                                                     <label class="custom-control-label" for="customCheck7">KPD (Kontrak Pengelolaan Dana)</label>
                                                                 </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <hr>
+                                                    <table>
+                                                        <tr>
+                                                            <td width="70px" valign="top">Tim</td>
+                                                            <td valign="top">
+                                                                <?php
+                                                                    if ($result_tim->num_rows > 0) {
+                                                                        while($row_tim = $result_tim->fetch_assoc()) {
+                                                                            
+                                                                ?>
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                <input type="checkbox" class="custom-control-input" name="team[]" value="<?= $row_tim['id']?>" id="<?= $row_tim['id']?>">
+                                                                                <label class="custom-control-label" for="<?= $row_tim['id']?>"><?=$row_tim['name']?></label>
+                                                                            </div>
+                                                                            <?php
+                                                                        }
+                                                                    }
+                                                                ?>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -233,6 +247,10 @@ if (!isset($_SESSION['login']) > 0) {
                                                     $filter2 = implode(",", $_POST['type']);
                                                     $and .= " AND jenis_perjanjian IN ($filter2)";
                                                 }
+                                                if (!empty($_POST['team'])) {
+                                                    $filter3 = implode(",", $_POST['team']);
+                                                    $and .= " AND team_id IN ($filter3)";
+                                                }
                                                 if (!empty($_POST['firstdate']) && !empty($_POST['lastdate'])) {
                                                     $fd = $_POST['firstdate'];
                                                     $ld = $_POST['lastdate'];
@@ -296,7 +314,7 @@ if (!isset($_SESSION['login']) > 0) {
                                             } elseif (isset($_GET['masareview'])) {
                                                 $sql = mysqli_query($conn, "SELECT * FROM docs WHERE `status` = 'Masa Review' AND is_approved = 1");
                                             } else {
-                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE is_approved = 1");
+                                                $sql = mysqli_query($conn, "SELECT * FROM docs WHERE is_approved = 1 AND departemen_id = 1");
                                             }
 
                                             $n = 1;

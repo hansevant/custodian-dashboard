@@ -1,10 +1,13 @@
 <?php
-session_start();
-require('../function.php');
-header("X-XSS-Protection: 1; mode=block");
-if (!isset($_SESSION['login']) > 0) {
-    echo "<script>location.href='../'</script>";
-}
+    session_start();
+    require('../function.php');
+    header("X-XSS-Protection: 1; mode=block");
+    if (!isset($_SESSION['login']) > 0) {
+        echo "<script>location.href='../'</script>";
+    }
+
+    $sql_departemen = "SELECT id, name FROM departements";
+    $result_departemen = $conn->query($sql_departemen);
 ?>
 
 <!DOCTYPE html>
@@ -97,15 +100,57 @@ if (!isset($_SESSION['login']) > 0) {
                                 <h4 class="card-title">Perbarui Dokumen</h4>
                                 <hr>
                                 <?php
-                                $id = $_GET["id"];
-                                $data = mysqli_query($conn, "SELECT * FROM docs WHERE id_dokumen = '$id'");
-                                $row = mysqli_fetch_row($data);
+                                    $id = $_GET["id"];
+                                    $data = mysqli_query($conn, "SELECT * FROM docs WHERE id_dokumen = '$id'");
+                                    $row = mysqli_fetch_row($data);
+
+                                    $selected_departemen_id = $row[15];
+                                    $selected_tim_id = $row[16];
                                 ?>
                                 <form action="functions/updateDoc.php" method="post" enctype="multipart/form-data">
                                     <input type="hidden" class="form-control" name="id_dokumen" value="<?= $row[0]; ?>" required>
                                     <div class="form-group">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Nama Dokumen</label>
                                         <input type="text" class="form-control" name="nama_dokumen" value="<?= $row[1]; ?>" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="mr-sm-2" for="departemen">Departemen</label>
+                                                <select class="custom-select mr-sm-2" id="departemen" name="departemen" required>
+                                                    <!-- <option disabled selected value>...</option> -->
+                                                    <?php
+                                                    // Loop untuk menampilkan opsi dropdown departemen
+                                                        if ($result_departemen->num_rows > 0) {
+                                                            while($row_departemen = $result_departemen->fetch_assoc()) {
+                                                                $selected = $row_departemen['id'] == $selected_departemen_id ? 'selected' : '';
+                                                                echo "<option value='" . $row_departemen['id'] . "' $selected>" . $row_departemen['name'] . "</option>";
+                                                            }
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="mr-sm-2" for="team">Team</label>
+                                                <select class="custom-select mr-sm-2" id="team" name="team" required>
+                                                <?php
+                                                    // Ambil dan tampilkan tim yang terkait dengan departemen yang dipilih sebelumnya
+                                                    if($selected_departemen_id) {
+                                                        $sql_tim = "SELECT id, `name` FROM teams WHERE departemen_id = $selected_departemen_id";
+                                                        $result_tim = $conn->query($sql_tim);
+                                                        if($result_tim->num_rows > 0){
+                                                            while($row_tim = $result_tim->fetch_assoc()){
+                                                                $selected = $row_tim['id'] == $selected_tim_id ? 'selected' : '';
+                                                                echo '<option value="'.$row_tim['id'].'" '.$selected.'>'.$row_tim['name'].'</option>';
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">

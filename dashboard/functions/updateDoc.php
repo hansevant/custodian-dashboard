@@ -5,6 +5,8 @@ session_start();
 
 $id_dokumen = $_POST['id_dokumen'];
 $nama_dokumen = $_POST['nama_dokumen'];
+$departemen = $_POST['departemen'];
+$team = $_POST['team'];
 $nasabah = $_POST['nasabah'];
 $jenis_perjanjian = $_POST['jenis_perjanjian'];
 $nomor_perjanjian = $_POST['nomor_perjanjian'];
@@ -40,6 +42,8 @@ if ($_FILES['dokumen']['error'] === 4) {
 
         $sql = mysqli_query($conn, "UPDATE `docs` SET 
         nama_dokumen = '$nama_dokumen',
+        departemen_id = '$departemen',
+        team_id = '$team',
         nasabah = '$nasabah',
         jenis_perjanjian = '$jenis_perjanjian',
         nomor_perjanjian = '$nomor_perjanjian', 
@@ -74,6 +78,8 @@ if ($_FILES['dokumen']['error'] === 4) {
         $sql = mysqli_query($conn, "UPDATE `docs` SET 
         nama_dokumen = '$nama_dokumen',
         dokumen = '$new_file_name',
+        departemen_id = '$departemen',
+        team_id = '$team',
         nasabah = '$nasabah',
         jenis_perjanjian = '$jenis_perjanjian',
         nomor_perjanjian = '$nomor_perjanjian', 
